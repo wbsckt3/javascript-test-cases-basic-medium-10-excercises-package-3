@@ -27,17 +27,15 @@
         <textarea id="code-editor">
 const shape = {
   out1() {
-	return this.name;
-  },
-  out2() {
-	return this.age;
-  },
-  name: 'Refactorii',
-  age: 21,
+    let c = { greeting: "Hey!" };
+    let d;
+    d = c;
+    c.greeting = "Hello";
+    return d.greeting;
+  }
 };
-// Casos de prueba:
+// Caso de prueba
 console.log(shape.out1());
-console.log(shape.out2());
         </textarea>
 		<img id="logo" src="logo_refactorii.png" alt="Logo Refactorii">
         <button id="run-button">Run</button>
@@ -171,27 +169,32 @@ console.log(shape.out2());
                     });
 
                     it('should log correct values', function(done) {
-					    const output = [];
-						const originalConsoleLog = console.log;
-						console.log = function(message) {
-							output.push(message);
-							originalConsoleLog.apply(console, arguments);
-						};
-						// Ensure output is clear before each run
-						output.length = 0;
-						// Execute user code
-						new Function(userCode)();
-						setTimeout(() => {
-						  try {
-							// Los logs se almacenan en la variable output durante las llamadas a out1() y out2()
-							expect(output[0]).to.equal('Refactorii'); // Verifica el primer log
-							expect(output[1]).to.equal(21); // Verifica el segundo log
-							done();
-						  } catch (err) {
-							done(err);
-						  }
-						}, 10); // Asegúrate de esperar lo suficiente para que se completen las operaciones
-					  });
+			  const output = [];
+			  const originalConsoleLog = console.log;
+			  console.log = function(message) {
+			    output.push(message);
+			    originalConsoleLog.apply(console, arguments);
+			  };
+			
+			  // Ensure output is clear before each run
+			  output.length = 0;
+			
+			  // Execute user code
+			  new Function(userCode)();
+			
+			  // Allow time for setTimeouts to complete
+			  setTimeout(() => {
+			    try {
+			      expect(output[0]).to.equal("Hello"); // Verifica el valor correcto del saludo
+			      done();
+			    } catch (err) {
+			      done(err);								
+			    } finally {
+			      console.log = originalConsoleLog; // Restore original console.log
+			    }
+			  }, 100); // Increase timeout if necessary
+		    });
+
 
                     it('should identify falsy values', function() {
                         expect(false).to.not.be.ok;
