@@ -25,7 +25,27 @@
 <body>
     <div id="editor-container">
         <textarea id="code-editor">
-
+const shape = {
+  sort: function(arr) {
+    // Implementación del algoritmo de ordenación (ejemplo: bubble sort)
+    for (let i = 0; i < arr.length - 1; i++) {
+      for (let j = 0; j < arr.length - i - 1; j++) {
+        if (arr[j] > arr[j + 1]) {
+          // Intercambiar elementos si están en el orden incorrecto
+          let temp = arr[j];
+          arr[j] = arr[j + 1];
+          arr[j + 1] = temp;
+        }
+      }
+    }
+    return arr;
+  }
+};
+// Ejemplo de uso
+const arrayToSort = [5, 2, 9, 1, 5];
+console.log('Array antes de ordenar:', arrayToSort);
+const sortedArray = shape.sort(arrayToSort);
+console.log('Array ordenado:', sortedArray);
         </textarea>
 		<img id="logo" src="logo_refactorii.png" alt="Logo Refactorii">
         <button id="run-button">Run</button>
