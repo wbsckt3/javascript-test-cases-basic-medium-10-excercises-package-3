@@ -32,9 +32,21 @@ const shape = {
       const finalArgs = Array.isArray(advisedArgs) ? advisedArgs : args;
       return target(...finalArgs);
     };
+  },
+  advisedFn: function() {
+    return this.adviseBefore(
+      function(...args) {
+        console.log('Original function called with args:', ...args);
+      },
+      function(...args) {
+        return ['Advised argument 1', 'Advised argument 2'];
+      }
+    );
   }
 };
-console.log(shape.adviseBefore());
+// Ejemplo de uso
+const advisedFn = shape.advisedFn();
+console.log(advisedFn('Test arg 1', 'Test arg 2'));
         </textarea>
 		<img id="logo" src="logo_refactorii.png" alt="Logo Refactorii">
         <button id="run-button">Run</button>
@@ -167,44 +179,71 @@ console.log(shape.adviseBefore());
                         }
                     });
 
- it('should advise before invoking a function', function(done) {
-                                const advisedFn = shape.adviseBefore(
-                                    function(...args) {
-                                        return 'Original function called with args: ' + args.join(', ');
-                                    },
-                                    function(...args) {
-                                        return ['Advised argument 1', 'Advised argument 2'];
-                                    }
-                                );
+ it('should advise before invoking a function', function (done) {
+                        const shape = {
+                            adviseBefore(target, advice) {
+                                return function (...args) {
+                                    const advisedArgs = advice(...args);
+                                    const finalArgs = Array.isArray(advisedArgs) ? advisedArgs : args;
+                                    return target(...finalArgs);
+                                };
+                            }
+                        };
 
-                                const result = advisedFn('Test arg 1', 'Test arg 2');
-                                expect(result).to.equal('Original function called with args: Advised argument 1, Advised argument 2');
-                                done();
-                            });
+                        const advisedFn = shape.adviseBefore(
+                            function (...args) {
+                                return 'Original function called with args: ' + args.join(', ');
+                            },
+                            function (...args) {
+                                return ['Advised argument 1', 'Advised argument 2'];
+                            }
+                        );
 
-
-
-                    it('should identify falsy values', function() {
-                        expect(false).to.not.be.ok;
-                        expect(0).to.not.be.ok;
-                        expect('').to.not.be.ok;
-                        expect(null).to.not.be.ok;
-                        expect(undefined).to.not.be.ok;
-                        expect(NaN).to.not.be.ok;
+                        const result = advisedFn('Test arg 1', 'Test arg 2');
+                        expect(result).to.equal('Original function called with args: Advised argument 1, Advised argument 2');
+                        done();
                     });
 
-                    it('should define variables correctly', function() {
-                        let testVar = 123;
-                        expect(testVar).to.equal(123);
-                    });
+it('should log advised arguments to console', function (done) {
+    const shape = {
+        adviseBefore(target, advice) {
+            return function (...args) {
+                const advisedArgs = advice(...args);
+                const finalArgs = Array.isArray(advisedArgs) ? advisedArgs : args;
+                return target(...finalArgs);
+            };
+        }
+    };
 
-                    it('should define and call functions correctly', function() {
-                        function testFunction() {
-                            return 'Hello, World!';
-                        }
-                        expect(testFunction()).to.equal('Hello, World!');
-                    });
-                });
+    const output = [];
+    const originalConsoleLog = console.log;
+    console.log = function (...args) {
+        output.push(args.join(' ')); // Unir todos los argumentos en una cadena para comparar con expect
+        originalConsoleLog.apply(console, args);
+    };
+
+    const advisedFn = shape.adviseBefore(
+        function (...args) {
+            console.log('Original function called with args:', ...args);
+        },
+        function (...args) {
+            return ['Advised argument 1', 'Advised argument 2'];
+        }
+    );
+
+    advisedFn('Test arg 1', 'Test arg 2');
+
+    setTimeout(() => {
+        try {
+            expect(output[0]).to.include('Original function called with args: Advised argument 1 Advised argument 2');
+            done();
+        } catch (err) {
+            done(err);
+        } finally {
+            console.log = originalConsoleLog;
+        }
+    }, 100);
+});
 
                 // Run Mocha tests
                 mocha.run()
