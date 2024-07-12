@@ -122,7 +122,14 @@ function test_cases_scenario() {
     });
 
     var modal_click_message = `Error, Haz click para entender el concepto, completa el código para imprimir correctamente los valores esperados`;
-    var error_message = `Error: AssertionError: expected undefined to equal 'Refactorii' Analiza las funciónes de salida out(). Tip: Falta algo en la sintaxis de la función`;
+    var error_message = `"Aspect-oriented programming ("AOP") is programming that adds additional behavior ("advice") to existing 
+    functionality without actually modifying that functionality.\n\nCreate a method called "adviseBefore".  
+    This method will take two arguments, a function ("target") and the advising function ("advice").\n\n"adviseBefore" 
+    should return a function that, when executed, will first execute the advising function and then the original 
+    method with the following conditions:\n\n* The arguments passed to the function that "adviseBefore" returns should be passed to the advising function.\n
+    * If the advising function returns an array, the array should replace the arguments passed to the original method.\n* If the advising function does not 
+    return an array, the original arguments 
+    should be passed to the original method.\n* The return value of the original method should be returned."`;
     var success_message = `Ok! haz modificado la función para mostrar correctamente los mensajes en consola`;
 
     // Función para mostrar el modal con el mensaje de error
