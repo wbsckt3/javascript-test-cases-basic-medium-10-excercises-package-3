@@ -26,24 +26,15 @@
     <div id="editor-container">
         <textarea id="code-editor">
 const shape = {
-  out1() {
-    let c = { greeting: "Hey!" };
-    let d;
-    d = c;
-    c.greeting = "Hello";
-    return d.greeting;
-  }
+    adviseBefore(target, advice) {
+        return function(...args) {
+            const advisedArgs = advice(...args);
+            const finalArgs = Array.isArray(advisedArgs) ? advisedArgs : args;
+            return target(...finalArgs);
+        };
+    }
 };
-function adviseBefore(target, advice) {
-  return function(...args) {
-    const advisedArgs = advice(...args);
-    const finalArgs = Array.isArray(advisedArgs) ? advisedArgs : args;
-    return target(...finalArgs);
-  };
-}
-const advisedOut1 = adviseBefore(shape.out1, () => {
-  console.log("Advised: Modifying greeting");
-});
+      
         </textarea>
 		<img id="logo" src="logo_refactorii.png" alt="Logo Refactorii">
         <button id="run-button">Run</button>
@@ -176,35 +167,39 @@ const advisedOut1 = adviseBefore(shape.out1, () => {
                         }
                     });
 
-describe('adviseBefore with shape.out1', function() {
-  it('should log correct greeting value', function(done) {
-    const output = [];
-    const originalConsoleLog = console.log;
-    console.log = function(message) {
-      output.push(message);
-      originalConsoleLog.apply(console, arguments);
-    };
+describe('AdviseBefore Function Tests', function() {
+                it('should apply advice correctly', function(done) {
+                    const output = [];
+                    const originalConsoleLog = console.log;
+                    console.log = function(message) {
+                        output.push(message);
+                        originalConsoleLog.apply(console, arguments);
+                    };
 
-    output.length = 0;
+                    // Ensure output is clear before each run
+                    output.length = 0;
 
-    const advisedOut1 = adviseBefore(shape.out1, () => {
-      console.log("Advised: Modifying greeting");
-    });
+                    // User code execution
+                    new Function(userCode)();
 
-    advisedOut1();
+                    // Allow time for setTimeouts to complete
+                    setTimeout(() => {
+                        try {
+                            // Define your test expectations for adviseBefore here
+                            // Example: expect(output[0]).to.equal('Advice: Before executing target function');
+                            expect(output[0]).to.include('Advice: Before executing target function');
 
-    setTimeout(() => {
-      try {
-        expect(output[0]).to.equal("Hello");
-        done();
-      } catch (err) {
-        done(err);
-      } finally {
-        console.log = originalConsoleLog;
-      }
-    }, 100);
-  });
-});
+                            // Restore original console.log
+                            console.log = originalConsoleLog;
+                            done();
+                        } catch (e) {
+                            console.error('Test error:', e);
+                            done(e);
+                        }
+                    }, 500); // Adjust timeout as needed
+                });
+            });
+        });
 
 
 
