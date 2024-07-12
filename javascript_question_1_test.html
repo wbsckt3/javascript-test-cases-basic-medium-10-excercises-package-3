@@ -174,20 +174,29 @@ console.log(shape.out1()); // Para probar la función out1 inicial
                         }
                     });
 
-it('should advise before invoking a function', function(done) {
-  const advisedFn = shape.adviseBefore(
-    function(...args) {
-      return 'Original function called with args: ' + args.join(', ');
-    },
-    function(...args) {
-      return ['Advised argument 1', 'Advised argument 2'];
-    }
-  );
+it('should log correct greeting value', function(done) {
+                                const output = [];
+                                const originalConsoleLog = console.log;
+                                console.log = function(message) {
+                                    output.push(message);
+                                    originalConsoleLog.apply(console, arguments);
+                                };
 
-  const result = advisedFn('Test arg 1', 'Test arg 2');
-  expect(result).to.equal('Original function called with args: Advised argument 1, Advised argument 2');
-  done();
-});
+                                output.length = 0;
+
+                                new Function(userCode)();
+
+                                setTimeout(() => {
+                                    try {
+                                        expect(output[0]).to.equal("Hello");
+                                        done();
+                                    } catch (err) {
+                                        done(err);
+                                    } finally {
+                                        console.log = originalConsoleLog;
+                                    }
+                                }, 100);
+                            });
 
 
 
