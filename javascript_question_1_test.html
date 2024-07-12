@@ -34,8 +34,16 @@ const shape = {
     return d.greeting;
   }
 };
-// Caso de prueba
-console.log(shape.out1());
+function adviseBefore(target, advice) {
+  return function(...args) {
+    const advisedArgs = advice(...args);
+    const finalArgs = Array.isArray(advisedArgs) ? advisedArgs : args;
+    return target(...finalArgs);
+  };
+}
+const advisedOut1 = adviseBefore(shape.out1, () => {
+  console.log("Advised: Modifying greeting");
+});
         </textarea>
 		<img id="logo" src="logo_refactorii.png" alt="Logo Refactorii">
         <button id="run-button">Run</button>
@@ -168,32 +176,36 @@ console.log(shape.out1());
                         }
                     });
 
-                    it('should log correct values', function(done) {
-			  const output = [];
-			  const originalConsoleLog = console.log;
-			  console.log = function(message) {
-			    output.push(message);
-			    originalConsoleLog.apply(console, arguments);
-			  };
-			
-			  // Ensure output is clear before each run
-			  output.length = 0;
-			
-			  // Execute user code
-			  new Function(userCode)();
-			
-			  // Allow time for setTimeouts to complete
-			  setTimeout(() => {
-			    try {
-			      expect(output[0]).to.equal("Hello"); // Verifica el valor correcto del saludo
-			      done();
-			    } catch (err) {
-			      done(err);								
-			    } finally {
-			      console.log = originalConsoleLog; // Restore original console.log
-			    }
-			  }, 100); // Increase timeout if necessary
-		    });
+describe('adviseBefore with shape.out1', function() {
+  it('should log correct greeting value', function(done) {
+    const output = [];
+    const originalConsoleLog = console.log;
+    console.log = function(message) {
+      output.push(message);
+      originalConsoleLog.apply(console, arguments);
+    };
+
+    output.length = 0;
+
+    const advisedOut1 = adviseBefore(shape.out1, () => {
+      console.log("Advised: Modifying greeting");
+    });
+
+    advisedOut1();
+
+    setTimeout(() => {
+      try {
+        expect(output[0]).to.equal("Hello");
+        done();
+      } catch (err) {
+        done(err);
+      } finally {
+        console.log = originalConsoleLog;
+      }
+    }, 100);
+  });
+});
+
 
 
                     it('should identify falsy values', function() {
