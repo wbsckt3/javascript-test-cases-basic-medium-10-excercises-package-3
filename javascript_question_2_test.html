@@ -245,6 +245,24 @@ it('should sort an array of positive integers', function() {
                         expect(output[1]).to.include('Array ordenado:');
                     });
 
+                        const arrayToSort = [5, 2, 9, 1, 5];
+                        const output = [];
+                        const originalConsoleLog = console.log;
+                        console.log = function(message) {
+                            output.push(message);
+                            originalConsoleLog.apply(console, arguments);
+                        };
+
+                        const sortedArray = shape.sort(arrayToSort);
+                        console.log('Array antes de ordenar:', arrayToSort);
+                        console.log('Array ordenado:', sortedArray);
+
+                        console.log = originalConsoleLog;
+
+                        expect(output[0]).to.include('Array antes de ordenar:');
+                        expect(output[1]).to.include('Array ordenado:');
+                    });
+
 
 
                     it('should identify falsy values', function () {
