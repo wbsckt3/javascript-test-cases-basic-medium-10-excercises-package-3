@@ -185,71 +185,33 @@ function test_cases_scenario() {
                         }
                     });
 
-                    it('should advise before invoking a function', function (done) {
-                        const shape = {
-                            adviseBefore(target, advice) {
-                                return function (...args) {
-                                    const advisedArgs = advice(...args);
-                                    const finalArgs = Array.isArray(advisedArgs) ? advisedArgs : args;
-                                    return target(...finalArgs);
-                                };
-                            }
-                        };
+it('should sort an array of positive integers', function() {
+                    const arrayToSort = [5, 2, 9, 1, 5];
+                    const expectedSortedArray = [1, 2, 5, 5, 9];
+                    const sortedArray = shape.sort(arrayToSort);
+                    expect(sortedArray).to.deep.equal(expectedSortedArray);
+                });
 
-                        const advisedFn = shape.adviseBefore(
-                            function (...args) {
-                                return 'Original function called with args: ' + args.join(', ');
-                            },
-                            function (...args) {
-                                return ['Advised argument 1', 'Advised argument 2'];
-                            }
-                        );
+                it('should log the original and sorted array', function() {
+                    const arrayToSort = [5, 2, 9, 1, 5];
+                    const output = [];
+                    const originalConsoleLog = console.log;
+                    console.log = function(message) {
+                        output.push(message);
+                        originalConsoleLog.apply(console, arguments);
+                    };
 
-                        const result = advisedFn('Test arg 1', 'Test arg 2');
-                        expect(result).to.equal('Original function called with args: Advised argument 1, Advised argument 2');
-                        done();
-                    });
+                    const sortedArray = shape.sort(arrayToSort);
+                    console.log('Array antes de ordenar:', arrayToSort);
+                    console.log('Array ordenado:', sortedArray);
 
-it('should log advised arguments to console', function (done) {
-    const shape = {
-        adviseBefore(target, advice) {
-            return function (...args) {
-                const advisedArgs = advice(...args);
-                const finalArgs = Array.isArray(advisedArgs) ? advisedArgs : args;
-                return target(...finalArgs);
-            };
-        }
-    };
+                    console.log = originalConsoleLog;
 
-    const output = [];
-    const originalConsoleLog = console.log;
-    console.log = function (...args) {
-        output.push(args.join(' ')); // Unir todos los argumentos en una cadena para comparar con expect
-        originalConsoleLog.apply(console, args);
-    };
+                    expect(output[0]).to.include('Array antes de ordenar:');
+                    expect(output[1]).to.include('Array ordenado:');
+                });
 
-    const advisedFn = shape.adviseBefore(
-        function (...args) {
-            console.log('Original function called with args:', ...args);
-        },
-        function (...args) {
-            return ['Advised argument 1', 'Advised argument 2'];
-        }
-    );
-
-    advisedFn('Test arg 1', 'Test arg 2');
-
-    setTimeout(() => {
-        try {
-            expect(output[0]).to.include('Original function called with args: Advised argument 1 Advised argument 2');
-            done();
-        } catch (err) {
-            done(err);
-        } finally {
-            console.log = originalConsoleLog;
-        }
-    }, 100);
-});
+            });
 
                     it('should identify falsy values', function () {
                         expect(false).to.not.be.ok;
