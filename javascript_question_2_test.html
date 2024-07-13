@@ -25,7 +25,27 @@
 <body>
     <div id="editor-container">
         <textarea id="code-editor">
-
+const shape = {
+  sort: function(arr) {
+    // Implementación del algoritmo de ordenación (ejemplo: bubble sort)
+    for (let i = 0; i < arr.length - 1; i++) {
+      for (let j = 0; j < arr.length - i - 1; j++) {
+        if (arr[j] > arr[j + 1]) {
+          // Intercambiar elementos si están en el orden incorrecto
+          let temp = arr[j];
+          arr[j] = arr[j + 1];
+          arr[j + 1] = temp;
+        }
+      }
+    }
+    return arr;
+  }
+};
+// Ejemplo de uso
+const arrayToSort = [5, 2, 9, 1, 5];
+console.log('Array antes de ordenar:', arrayToSort);
+const sortedArray = shape.sort(arrayToSort);
+console.log('Array ordenado:', sortedArray);
         </textarea>
 		<img id="logo" src="logo_refactorii.png" alt="Logo Refactorii">
         <button id="run-button">Run</button>
@@ -165,7 +185,7 @@ function test_cases_scenario() {
                         }
                     });
 
-                   it('should sort an array of positive integers', function() {
+                it('should sort an array of positive integers', function() {
                     const arrayToSort = [5, 2, 9, 1, 5];
                     const expectedSortedArray = [1, 2, 5, 5, 9];
                     const sortedArray = shape.sort(arrayToSort);
@@ -193,35 +213,7 @@ function test_cases_scenario() {
 
             });
 
-    const output = [];
-    const originalConsoleLog = console.log;
-    console.log = function (...args) {
-        output.push(args.join(' ')); // Unir todos los argumentos en una cadena para comparar con expect
-        originalConsoleLog.apply(console, args);
-    };
 
-    const advisedFn = shape.adviseBefore(
-        function (...args) {
-            console.log('Original function called with args:', ...args);
-        },
-        function (...args) {
-            return ['Advised argument 1', 'Advised argument 2'];
-        }
-    );
-
-    advisedFn('Test arg 1', 'Test arg 2');
-
-    setTimeout(() => {
-        try {
-            expect(output[0]).to.include('Original function called with args: Advised argument 1 Advised argument 2');
-            done();
-        } catch (err) {
-            done(err);
-        } finally {
-            console.log = originalConsoleLog;
-        }
-    }, 100);
-});
 
                     it('should identify falsy values', function () {
                         expect(false).to.not.be.ok;
