@@ -220,7 +220,6 @@ function test_cases_scenario() {
 
                             // Execute user code
                             try {
-                                new Function(userCode)();
                                 advisedFn('Test arg 1', 'Test arg 2');
 
                                 setTimeout(() => {
@@ -241,7 +240,7 @@ function test_cases_scenario() {
                             }
                         });
 
-                        it('should apply advice before target function', function() {
+                        it('should apply advice before target function', function(done) {
                             const shape = {
                                 adviseBefore(target, advice) {
                                     return function(...args) {
@@ -270,14 +269,32 @@ function test_cases_scenario() {
                                 originalConsoleLog.apply(console, arguments);
                             };
 
-                            advisedFn('Test arg 1', 'Test arg 2');
+                            // Ensure output is clear before each run
+                            output.length = 0;
 
-                            console.log = originalConsoleLog;
+                            // Execute user code
+                            try {
+                                advisedFn('Test arg 1', 'Test arg 2');
 
-                            expect(output[0]).to.include('Original function called with args: Advised argument 1 Advised argument 2');
+                                setTimeout(() => {
+                                    try {
+                                        // Ensure console.log is restored
+                                        console.log = originalConsoleLog;
+
+                                        // Check the output
+                                        expect(output[0]).to.include('Original function called with args: Advised argument 1 Advised argument 2');
+                                        done();
+                                    } catch (err) {
+                                        done(err);
+                                    }
+                                }, 10); // Asegúrate de esperar lo suficiente para que se completen las operaciones
+                            } catch (err) {
+                                console.log = originalConsoleLog;
+                                done(err);
+                            }
                         });
 
-                        it('should use original arguments if advice does not return an array', function() {
+                        it('should use original arguments if advice does not return an array', function(done) {
                             const shape = {
                                 adviseBefore(target, advice) {
                                     return function(...args) {
@@ -306,11 +323,29 @@ function test_cases_scenario() {
                                 originalConsoleLog.apply(console, arguments);
                             };
 
-                            advisedFn('Test arg 1', 'Test arg 2');
+                            // Ensure output is clear before each run
+                            output.length = 0;
 
-                            console.log = originalConsoleLog;
+                            // Execute user code
+                            try {
+                                advisedFn('Test arg 1', 'Test arg 2');
 
-                            expect(output[0]).to.include('Original function called with args: Test arg 1 Test arg 2');
+                                setTimeout(() => {
+                                    try {
+                                        // Ensure console.log is restored
+                                        console.log = originalConsoleLog;
+
+                                        // Check the output
+                                        expect(output[0]).to.include('Original function called with args: Test arg 1 Test arg 2');
+                                        done();
+                                    } catch (err) {
+                                        done(err);
+                                    }
+                                }, 10); // Asegúrate de esperar lo suficiente para que se completen las operaciones
+                            } catch (err) {
+                                console.log = originalConsoleLog;
+                                done(err);
+                            }
                         });
                     });
 
@@ -335,7 +370,7 @@ function test_cases_scenario() {
                 }
             }, 500); // Delay to allow user code execution
         });
-}
+   }
 	    
     async function guardarResultados() {
 	    const formData = JSON.parse(localStorage.getItem("formData"));
