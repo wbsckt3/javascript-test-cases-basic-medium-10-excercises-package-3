@@ -186,81 +186,28 @@ function test_cases_scenario() {
                         }
                     });
 
-                    it('should advise before invoking a function', function (done) {
-                        const shape = {
-                            adviseBefore(target, advice) {
-                                return function (...args) {
-                                    const advisedArgs = advice(...args);
-                                    const finalArgs = Array.isArray(advisedArgs) ? advisedArgs : args;
-                                    return target(...finalArgs);
-                                };
-                            }
-                        };
-
-                        const advisedFn = shape.adviseBefore(
-                            function (...args) {
-                                return 'Original function called with args: ' + args.join(', ');
-                            },
-                            function (...args) {
-                                return ['Advised argument 1', 'Advised argument 2'];
-                            }
-                        );
-
-                        const result = advisedFn('Test arg 1', 'Test arg 2');
-                        expect(result).to.equal('Original function called with args: Advised argument 1, Advised argument 2');
-                        done();
-                    });
-it('should advise before executing the original function', function() {
-        let originalCalled = false;
-        const targetFn = function(...args) {
-            originalCalled = true;
-        };
-        const adviceFn = function(...args) {
-            return ['Advised argument 1', 'Advised argument 2'];
-        };
-        const advisedFn = shape.adviseBefore(targetFn, adviceFn);
-        advisedFn('Test arg 1', 'Test arg 2');
-        assert.isTrue(originalCalled, 'Original function should be called');
-    });
-
-    it('should modify the arguments passed to the original function', function() {
-        let receivedArgs;
-        const targetFn = function(...args) {
-            receivedArgs = args;
-        };
-        const adviceFn = function(...args) {
-            return ['Advised argument 1', 'Advised argument 2'];
-        };
-        const advisedFn = shape.adviseBefore(targetFn, adviceFn);
-        advisedFn('Test arg 1', 'Test arg 2');
-        assert.deepEqual(receivedArgs, ['Advised argument 1', 'Advised argument 2'], 'Arguments should be modified by advice');
-    });
-
-    it('should not modify arguments if advice does not return an array', function() {
-        let receivedArgs;
-        const targetFn = function(...args) {
-            receivedArgs = args;
-        };
-        const adviceFn = function(...args) {
-            return null; // Returning null should not modify arguments
-        };
-        const advisedFn = shape.adviseBefore(targetFn, adviceFn);
-        advisedFn('Test arg 1', 'Test arg 2');
-        assert.deepEqual(receivedArgs, ['Test arg 1', 'Test arg 2'], 'Arguments should not be modified');
-    });
-
-    it('advisedFn should log the correct arguments', function() {
-        const consoleLog = console.log;
-        let loggedArgs;
-        console.log = (...args) => { loggedArgs = args; };
-        
-        const advisedFn = shape.advisedFn();
-        advisedFn('Test arg 1', 'Test arg 2');
-        
-        console.log = consoleLog; // Restore original console.log
-        assert.deepEqual(loggedArgs, ['Original function called with args:', 'Advised argument 1', 'Advised argument 2'], 'Should log correct arguments');
-    });
-
+it('should log correct values', function(done) {
+					    const output = [];
+						const originalConsoleLog = console.log;
+						console.log = function(message) {
+							output.push(message);
+							originalConsoleLog.apply(console, arguments);
+						};
+						// Ensure output is clear before each run
+						output.length = 0;
+						// Execute user code
+						new Function(userCode)();
+						setTimeout(() => {
+						  try {
+							// Los logs se almacenan en la variable output durante las llamadas a out1() y out2()				
+							expect(output[0]).to.include('Original function called with args: Test arg 1 Test arg 2');
+							done();
+						  } catch (err) {
+							done(err);
+						  }
+						}, 10); // Asegúrate de esperar lo suficiente para que se completen las operaciones
+					  });
+			
                     it('should identify falsy values', function () {
                         expect(false).to.not.be.ok;
                         expect(0).to.not.be.ok;
