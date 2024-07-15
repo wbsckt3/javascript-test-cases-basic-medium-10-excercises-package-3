@@ -21,35 +21,37 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jwt-decode@4.0.0/build/cjs/index.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sinon.js/13.0.1/sinon.min.js"></script>
+
 </head>
 <body>
     <div id="editor-container">
         <textarea id="code-editor">
 function adviseBefore(target, advice) {
-            return function(...args) {
-                const advisedArgs = advice(...args);
-                const finalArgs = Array.isArray(advisedArgs) ? advisedArgs : args;
-                return target(...finalArgs);
-            };
-        }
+    return function(...args) {
+        const advisedArgs = advice(...args);
+        const finalArgs = Array.isArray(advisedArgs) ? advisedArgs : args;
+        return target(...finalArgs);
+    };
+}
 
-        // Ejemplo de uso
-        const originalFunction = function(...args) {
-            console.log('Original function called with args:', ...args);
-            return args.join(', ');
-        };
+// Ejemplo de uso
+const originalFunction = function(...args) {
+    console.log('Original function called with args:', ...args);
+    return args.join(', ');
+};
 
-        const adviceFunction = function(...args) {
-            console.log('Advice function called with args:', ...args);
-            // Cambia los argumentos
-            return ['Advised argument 1', 'Advised argument 2'];
-        };
+const adviceFunction = function(...args) {
+    console.log('Advice function called with args:', ...args);
+    // Cambia los argumentos
+    return ['Advised argument 1', 'Advised argument 2'];
+};
 
-        const advisedFn = adviseBefore(originalFunction, adviceFunction);
+const advisedFn = adviseBefore(originalFunction, adviceFunction);
 
-        // Ejecuta la función con los nuevos argumentos
-        const result = advisedFn('Test arg 1', 'Test arg 2');
-        console.log(result); // Debería mostrar 'Advised argument 1, Advised argument 2'
+// Ejecuta la función con los nuevos argumentos
+const result = advisedFn('Test arg 1', 'Test arg 2');
+console.log(result); // Debería mostrar 'Advised argument 1, Advised argument 2'
 
         </textarea>
 		<img id="logo" src="logo_refactorii.png" alt="Logo Refactorii">
