@@ -170,7 +170,8 @@ console.log(result); // Debería mostrar 'Advised argument 1, Advised argument 2
 
             // Evaluate the user's code
             try {
-                new Function(userCode)();
+                const userFunction = new Function(userCode + '; return adviseBefore;');
+                const adviseBefore = userFunction();
 
                 // Define test cases
                 const expect = chai.expect;
