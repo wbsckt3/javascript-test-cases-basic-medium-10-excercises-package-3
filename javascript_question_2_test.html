@@ -196,11 +196,10 @@ console.log('Array ordenado:', sortedArray);
       const sortedArray = shape.sort(arrayToSort);
       expect(sortedArray).to.deep.equal([1, 2, 2, 3, 3]);
     });
-  });
 
                 });  // end describe
 
-                // Run Mocha tests
+ 	        // Run Mocha tests
                 mocha.run()
                     .on('test', function(test) {
                         logToConsole('• Running test: ' + test.title);
