@@ -21,28 +21,36 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/jwt-decode@4.0.0/build/cjs/index.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sinon.js/13.0.1/sinon.min.js"></script>
 </head>
 <body>
     <div id="editor-container">
         <textarea id="code-editor">
-const shape = {
-  out1() {
-    class Chameleon {
-      static colorChange(newColor) {
-        Chameleon.newColor = newColor;
-        return Chameleon.newColor;
-      }
+function adviseBefore(target, advice) {
+    return function(...args) {
+        const advisedArgs = advice(...args);
+        const finalArgs = Array.isArray(advisedArgs) ? advisedArgs : args;
+        return target(...finalArgs);
+    };
+}
 
-      constructor({ newColor = "green" } = {}) {
-        this.newColor = newColor;
-      }
-    }
-    const freddie = new Chameleon({ newColor: "purple" });
-    return Chameleon.colorChange("orange");
-  }
+// Ejemplo de uso
+const originalFunction = function(...args) {
+    console.log('Original function called with args:', ...args);
+    return args.join(', ');
 };
 
-console.log(shape.out1());
+const adviceFunction = function(...args) {
+    console.log('Advice function called with args:', ...args);
+    // Cambia los argumentos
+    return ['Advised argument 1', 'Advised argument 2'];
+};
+
+const advisedFn = adviseBefore(originalFunction, adviceFunction);
+
+// Ejecuta la función con los nuevos argumentos
+const result = advisedFn('Test arg 1', 'Test arg 2');
+console.log(result); // Debería mostrar 'Advised argument 1, Advised argument 2'
 
         </textarea>
 		<img id="logo" src="logo_refactorii.png" alt="Logo Refactorii">
@@ -175,53 +183,59 @@ console.log(shape.out1());
                             done(e);
                         }
                     });
-       
-it('should log the correct new color', function(done) {
-  const output = [];
-  const originalConsoleLog = console.log;
-  console.log = function(message) {
-    output.push(message);
-    originalConsoleLog.apply(console, arguments);
-  };
+       it('should return a function', function () {
+                            const adviceBeforeReturn = adviseBefore(() => { }, () => { });
+                            expect(adviceBeforeReturn).to.be.a('function');
+                        });
 
-  output.length = 0;
+                        it('should modify arguments when advice function returns an array', function () {
+                            const originalFunction = function (...args) {
+                                return args;
+                            };
+                            const adviceFunction = function () {
+                                return ['advised arg1', 'advised arg2'];
+                            };
+                            const advisedFn = adviseBefore(originalFunction, adviceFunction);
+                            const result = advisedFn('original arg1', 'original arg2');
+                            expect(result).to.deep.equal(['advised arg1', 'advised arg2']);
+                        });
 
-  // Ejecutar código del usuario
-  new Function(userCode)();
+                        it('should not modify arguments when advice function does not return an array', function () {
+                            const originalFunction = function (...args) {
+                                return args;
+                            };
+                            const adviceFunction = function () {
+                                return 'not an array';
+                            };
+                            const advisedFn = adviseBefore(originalFunction, adviceFunction);
+                            const result = advisedFn('original arg1', 'original arg2');
+                            expect(result).to.deep.equal(['original arg1', 'original arg2']);
+                        });
 
-  setTimeout(() => {
-    try {
-      expect(output[0]).to.equal('orange'); // Verifica el valor correcto
-      done();
-    } catch (err) {
-      done(err);
-    } finally {
-      console.log = originalConsoleLog; // Restaurar console.log original
-    }
-  }, 100);
-});
+                        it('should call advice function first and then original function', function () {
+                            const calls = [];
+                            const originalFunction = function () {
+                                calls.push('original');
+                            };
+                            const adviceFunction = function () {
+                                calls.push('advice');
+                            };
+                            const advisedFn = adviseBefore(originalFunction, adviceFunction);
+                            advisedFn();
+                            expect(calls).to.deep.equal(['advice', 'original']);
+                        });
 
-			
-                    it('should identify falsy values', function() {
-                        expect(false).to.not.be.ok;
-                        expect(0).to.not.be.ok;
-                        expect('').to.not.be.ok;
-                        expect(null).to.not.be.ok;
-                        expect(undefined).to.not.be.ok;
-                        expect(NaN).to.not.be.ok;
-                    });
+                        it('should print "Refactorii, 21"', function () {
+                            const adviceBeforeReturn = adviseBefore(
+                                (name, age) => console.log(`${name}, ${age}`),
+                                (name, age) => [name, age]
+                            );
+                            const consoleSpy = sinon.spy(console, 'log');
+                            adviceBeforeReturn('Refactorii', 21);
+                            expect(consoleSpy.calledWith('Refactorii, 21')).to.be.true;
+                            consoleSpy.restore();
+                        });
 
-                    it('should define variables correctly', function() {
-                        let testVar = 123;
-                        expect(testVar).to.equal(123);
-                    });
-
-                    it('should define and call functions correctly', function() {
-                        function testFunction() {
-                            return 'Hello, World!';
-                        }
-                        expect(testFunction()).to.equal('Hello, World!');
-                    });
                 });
 
                 // Run Mocha tests
