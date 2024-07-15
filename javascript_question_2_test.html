@@ -143,107 +143,105 @@ console.log('Array ordenado:', sortedArray);
         }
 
         document.getElementById('run-button').addEventListener('click', function() {
-            // Clear previous results
-            document.getElementById('console').innerHTML = '';
-            document.getElementById('mocha').innerHTML = '';
-            mocha.suite.suites = []; // Clear previous test cases
-            // Get the user's code from the editor
-            const userCode = editor.getValue();
-            // Redirect console.log to custom console
-	    const output = [];
-	    const originalConsoleLog = console.log;
-	    console.log = function(message) {
-		output.push(message);
-		logToConsole(message);
-	    };
-	    // Show "Ejecutando tests..." message and delay tests
-	    logToConsole('Ejecutando tests...', 'blue');
-  	    setTimeout(() => {
-            	// Evaluate the user's code
-            	try {
-                    const userFunction = new Function(userCode + '; return shape;');  
-                    const shape = userFunction();
-                    // Define test cases
-                    const expect = chai.expect;
-                    describe('JavaScript Code Tests', function() {
-                    
-	it('should sort an array of numbers in ascending order', function() {
-      const arrayToSort = [5, 2, 9, 1, 5];
-      const sortedArray = shape.sort(arrayToSort);
-      expect(sortedArray).to.deep.equal([1, 2, 5, 5, 9]);
-    });
+    // Clear previous results
+    document.getElementById('console').innerHTML = '';
+    document.getElementById('mocha').innerHTML = '';
+    mocha.suite.suites = []; // Clear previous test cases
+    // Get the user's code from the editor
+    const userCode = editor.getValue();
+    // Redirect console.log to custom console
+    const output = [];
+    const originalConsoleLog = console.log;
+    console.log = function(message) {
+        output.push(message);
+        logToConsole(message);
+    };
+    // Show "Ejecutando tests..." message and delay tests
+    logToConsole('Ejecutando tests...', 'blue');
+    setTimeout(() => {
+        // Evaluate the user's code
+        try {
+            const userFunction = new Function(userCode + '; return shape;');
+            const shape = userFunction();
+            // Define test cases
+            const expect = chai.expect;
+            describe('JavaScript Code Tests', function() {
 
-    it('should return an empty array when given an empty array', function() {
-      const arrayToSort = [];
-      const sortedArray = shape.sort(arrayToSort);
-      expect(sortedArray).to.deep.equal([]);
-    });
+                it('should sort an array of numbers in ascending order', function() {
+                    const arrayToSort = [5, 2, 9, 1, 5];
+                    const sortedArray = shape.sort(arrayToSort);
+                    expect(sortedArray).to.deep.equal([1, 2, 5, 5, 9]);
+                });
 
-    it('should return the same array when it is already sorted', function() {
-      const arrayToSort = [1, 2, 3, 4, 5];
-      const sortedArray = shape.sort(arrayToSort);
-      expect(sortedArray).to.deep.equal([1, 2, 3, 4, 5]);
-    });
+                it('should return an empty array when given an empty array', function() {
+                    const arrayToSort = [];
+                    const sortedArray = shape.sort(arrayToSort);
+                    expect(sortedArray).to.deep.equal([]);
+                });
 
-    it('should handle an array with negative numbers', function() {
-      const arrayToSort = [3, -2, -1, 4, 0];
-      const sortedArray = shape.sort(arrayToSort);
-      expect(sortedArray).to.deep.equal([-2, -1, 0, 3, 4]);
-    });
+                it('should return the same array when it is already sorted', function() {
+                    const arrayToSort = [1, 2, 3, 4, 5];
+                    const sortedArray = shape.sort(arrayToSort);
+                    expect(sortedArray).to.deep.equal([1, 2, 3, 4, 5]);
+                });
 
-    it('should handle an array with duplicate numbers', function() {
-      const arrayToSort = [3, 2, 2, 1, 3];
-      const sortedArray = shape.sort(arrayToSort);
-      expect(sortedArray).to.deep.equal([1, 2, 2, 3, 3]);
-    });
+                it('should handle an array with negative numbers', function() {
+                    const arrayToSort = [3, -2, -1, 4, 0];
+                    const sortedArray = shape.sort(arrayToSort);
+                    expect(sortedArray).to.deep.equal([-2, -1, 0, 3, 4]);
+                });
 
-                });  // end describe
+                it('should handle an array with duplicate numbers', function() {
+                    const arrayToSort = [3, 2, 2, 1, 3];
+                    const sortedArray = shape.sort(arrayToSort);
+                    expect(sortedArray).to.deep.equal([1, 2, 2, 3, 3]);
+                });
+            });
 
- 	        // Run Mocha tests
-                mocha.run()
-                    .on('test', function(test) {
-                        logToConsole('• Running test: ' + test.title);
-                    })
-                    .on('test end', function(test) {
-                        logToConsole('• Test finished: ' + test.title);
-                    })
-                    .on('pass', function(test) {
-                        logToConsole('• Test passed: ' + test.title);
-                    })
-                    .on('fail', function(test, err) {
-			logToConsole('• Test failed: ' + test.title + ' - ' + err.message);
-			success_message = modal_click_message;
-			const runButton = document.getElementById('run-button');
-			runButton.innerText = 'Reintentar';
-			runButton.style.backgroundColor = '#ff0000ad';
-			runButton.onclick = function() {
-			    window.location.reload();
-			};
-		     })
-		     .on('end', function() {
-			logToConsole('• All tests finished!');
-			document.getElementById('modify-message').innerText = success_message;
-			document.getElementById('modify-message').style.display = 'block';
-			document.getElementById('modify-message').style.color = 'black';
-			if (success_message === "Ok! haz modificado la función para mostrar correctamente los mensajes en consola") {
-			    document.getElementById('send-response-button').style.display = 'inline-block';
-			    document.getElementById('send-response-button').style.background = 'green';
-			    document.getElementById('send-response-button').style.cursor= 'pointer';
-			    document.getElementById('send-response-button').style.color= 'white';
-		        }
-		     });
+            // Run Mocha tests
+            mocha.run()
+                .on('test', function(test) {
+                    logToConsole('• Running test: ' + test.title);
+                })
+                .on('test end', function(test) {
+                    logToConsole('• Test finished: ' + test.title);
+                })
+                .on('pass', function(test) {
+                    logToConsole('• Test passed: ' + test.title);
+                })
+                .on('fail', function(test, err) {
+                    logToConsole('• Test failed: ' + test.title + ' - ' + err.message);
+                    success_message = modal_click_message;
+                    const runButton = document.getElementById('run-button');
+                    runButton.innerText = 'Reintentar';
+                    runButton.style.backgroundColor = '#ff0000ad';
+                    runButton.onclick = function() {
+                        window.location.reload();
+                    };
+                })
+                .on('end', function() {
+                    logToConsole('• All tests finished!');
+                    document.getElementById('modify-message').innerText = success_message;
+                    document.getElementById('modify-message').style.display = 'block';
+                    document.getElementById('modify-message').style.color = 'black';
+                    if (success_message === "Ok! haz modificado la función para mostrar correctamente los mensajes en consola") {
+                        document.getElementById('send-response-button').style.display = 'inline-block';
+                        document.getElementById('send-response-button').style.background = 'green';
+                        document.getElementById('send-response-button').style.cursor= 'pointer';
+                        document.getElementById('send-response-button').style.color= 'white';
+                    }
+                });
 
-            } catch (e) {
-                console.error('Error evaluating user code:', e);
-                logToConsole('Error: ' + e.message, 'red');
-            } finally {
-                // Restore original console.log
-                console.log = originalConsoleLog;
-            }
-			
-		}, 3000); // 3 seconds delay
-        });
-    }
+        } catch (e) {
+            console.error('Error evaluating user code:', e);
+            logToConsole('Error: ' + e.message, 'red');
+        } finally {
+            // Restore original console.log
+            console.log = originalConsoleLog;
+        }
+
+    }, 3000); // 3 seconds delay
+});
 	    
     async function guardarResultados() {
 	    const formData = JSON.parse(localStorage.getItem("formData"));
