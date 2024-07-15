@@ -162,7 +162,7 @@ console.log('Array ordenado:', sortedArray);
             	// Evaluate the user's code
             	try {
                     const userFunction = new Function(userCode + '; return shape.sort;');
-                    const adviseBefore = userFunction();
+                    const sortFunction = userFunction();
                     // Define test cases
                     const expect = chai.expect;
                     describe('JavaScript Code Tests', function() {
