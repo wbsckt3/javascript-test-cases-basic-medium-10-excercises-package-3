@@ -150,42 +150,36 @@ function test_cases_scenario() {
     }
 
     document.getElementById('run-button').addEventListener('click', function () {
-        // Clear previous results
-        document.getElementById('console').innerHTML = '';
-        document.getElementById('mocha').innerHTML = '';
-        mocha.suite.suites = []; // Clear previous test cases
+    document.getElementById('console').innerHTML = '';
+    document.getElementById('mocha').innerHTML = '';
+    mocha.suite.suites = []; // Clear previous test cases
 
-        // Get the user's code from the editor
-        const userCode = editor.getValue();
+    const userCode = editor.getValue();
 
-        // Redirect console.log to custom console
-        const output = [];
-        const originalConsoleLog = console.log;
-        console.log = function (message) {
-            output.push(message);
-            logToConsole(message);
-        };
+    const output = [];
+    const originalConsoleLog = console.log;
+    console.log = function (message) {
+        output.push(message);
+        logToConsole(message);
+    };
 
-        // Show "Ejecutando tests..." message and delay tests
-        logToConsole('Ejecutando tests...', 'blue');
+    logToConsole('Ejecutando tests...', 'blue');
 
-        setTimeout(() => {
-            // Evaluate the user's code
-            try {
-                new Function(userCode)();
+    setTimeout(() => {
+        try {
+            new Function(userCode)();
 
-                // Define test cases
-                const expect = chai.expect;
-                describe('JavaScript Code Tests', function () {
-                    it('should execute without errors', function (done) {
-                        try {
-                            new Function(userCode)();
-                            done();
-                        } catch (e) {
-                            done(e);
-                        }
-                    });
-
+            const expect = chai.expect;
+            describe('JavaScript Code Tests', function () {
+                it('should execute without errors', function (done) {
+                    try {
+                        new Function(userCode)();
+                        done();
+                    } catch (e) {
+                        done(e);
+                    }
+                });
+		    
 it('should log correct values', function(done) {
                             const shape = {
                                 adviseBefore(target, advice) {
@@ -312,9 +306,6 @@ it('should log correct values', function(done) {
 
                             expect(output[0]).to.include('Original function called with args: Test arg 1 Test arg 2');
                         });
-                    });
-
-
 
                     it('should identify falsy values', function () {
                         expect(false).to.not.be.ok;
