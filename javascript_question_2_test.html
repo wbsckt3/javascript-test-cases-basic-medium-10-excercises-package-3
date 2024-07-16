@@ -28,11 +28,10 @@
         <textarea id="code-editor">
 const shape = {
   sort: function(arr) {
-    // Implementación del algoritmo de ordenación (ejemplo: bubble sort)
+    // Sorting algorithm implementation (example: bubble sort)
     for (let i = 0; i < arr.length - 1; i++) {
       for (let j = 0; j < arr.length - i - 1; j++) {
         if (arr[j] > arr[j + 1]) {
-          // Intercambiar elementos si están en el orden incorrecto
           let temp = arr[j];
           arr[j] = arr[j + 1];
           arr[j + 1] = temp;
@@ -42,11 +41,11 @@ const shape = {
     return arr;
   }
 };
-// Ejemplo de uso
+// test case
 const arrayToSort = [5, 2, 9, 1, 5];
-console.log('Array antes de ordenar:', arrayToSort);
+console.log('Array before sorting:', arrayToSort);
 const sortedArray = shape.sort(arrayToSort);
-console.log('Array ordenado:', sortedArray);
+console.log('Sorted array:', sortedArray);
 
         </textarea>
 		<img id="logo" src="logo_refactorii.png" alt="Logo Refactorii">
@@ -54,10 +53,12 @@ console.log('Array ordenado:', sortedArray);
     </div>
     <div id="app-container">
         <div id="app">
-		    <h5>Ejercicio 1</h5>
-            <p>modifica la función para impimir en consola: <strong>Refactorii, 21</strong></p>
+	    <h5>Excersise 2: medium-advanced level</h5>
+            <p>The following problem deals with sorting an array of positive integers using the Bubble Sort sort method. 
+	       The implementation is done within a shape object with a sort function that takes an array as an argument 
+	       and returns the sorted array. </p>
             <div id="modify-message"></div>
-	    <button id="send-response-button" onClick= "guardarResultados()">Enviar respuesta</button>
+	    <button id="send-response-button" onClick= "guardarResultados()">Send response</button>
         </div>
     </div>
     <div id="console-container"><div id="console"></div></div>
@@ -225,7 +226,7 @@ console.log('Array ordenado:', sortedArray);
 			document.getElementById('modify-message').innerText = success_message;
 			document.getElementById('modify-message').style.display = 'block';
 			document.getElementById('modify-message').style.color = 'black';
-			if (success_message === "Ok! haz modificado la función para mostrar correctamente los mensajes en consola") {
+			if (success_message === "Ok! you have modified the function to obtain the ordered array") {
 			    document.getElementById('send-response-button').style.display = 'inline-block';
 			    document.getElementById('send-response-button').style.background = 'green';
 			    document.getElementById('send-response-button').style.cursor= 'pointer';
