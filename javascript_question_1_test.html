@@ -38,14 +38,7 @@ function adviseBefore(target, advice) {
 const originalFunction = function(...args) {
     console.log('Original function called with args:', ...args);
     return args.join(', ');
-			   
-   
-};
-			
-									
-												  
-											
-										  
+};						  
 
 const adviceFunction = function(...args) {
     console.log('Advice function called with args:', ...args);
