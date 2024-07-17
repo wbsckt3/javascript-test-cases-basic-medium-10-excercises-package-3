@@ -45,10 +45,15 @@ const adviceFunction = function(...args) {
     // Cambia los argumentos
     return ['Advised argument 1', 'Advised argument 2'];
 };
+			
+									
+												  
+											
+										  
 
 const advisedFn = adviseBefore(originalFunction, adviceFunction);
 
-// Ejecuta la función con los nuevos argumentos
+// Test case
 const result = advisedFn('Test arg 1', 'Test arg 2');
 console.log(result); // Debería mostrar 'Advised argument 1, Advised argument 2'
 
@@ -70,7 +75,7 @@ The return value of the original method should be returned.
 This exercise tests your ability to work with higher-order functions, argument manipulation, and function composition in JavaScript.</strong></p>
 																																					 
             <div id="modify-message"></div>
-	    <button id="send-response-button" onClick= "guardarResultados()">Enviar respuesta</button>
+	    <button id="send-response-button" onClick= "guardarResultados()">Send response</button>
         </div>
     </div>
     <div id="console-container"><div id="console"></div></div>
