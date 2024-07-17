@@ -34,11 +34,18 @@ function adviseBefore(target, advice) {
     };
 }
 
-// Ejemplo de uso
+// Test case
 const originalFunction = function(...args) {
     console.log('Original function called with args:', ...args);
     return args.join(', ');
+			   
+   
 };
+			
+									
+												  
+											
+										  
 
 const adviceFunction = function(...args) {
     console.log('Advice function called with args:', ...args);
@@ -60,6 +67,7 @@ console.log(result); // Debería mostrar 'Advised argument 1, Advised argument 2
         <div id="app">
 	    <strong>Ejercicio 1</strong>
             <p style="font-size: 13px;">modifica la función para impimir en consola: <strong>Refactorii, 21</strong></p>
+																																					 
             <div id="modify-message"></div>
 	    <button id="send-response-button" onClick= "guardarResultados()">Enviar respuesta</button>
         </div>
@@ -161,7 +169,7 @@ console.log(result); // Debería mostrar 'Advised argument 1, Advised argument 2
 		logToConsole(message);
 	    };
 	    // Show "Ejecutando tests..." message and delay tests
-	    logToConsole('Ejecutando tests...', 'blue');
+	    logToConsole('Running tests...', 'blue');
   	    setTimeout(() => {
             	// Evaluate the user's code
             	try {
@@ -260,7 +268,7 @@ console.log(result); // Debería mostrar 'Advised argument 1, Advised argument 2
 			document.getElementById('modify-message').innerText = success_message;
 			document.getElementById('modify-message').style.display = 'block';
 			document.getElementById('modify-message').style.color = 'black';
-			if (success_message === "Ok! haz modificado la función para mostrar correctamente los mensajes en consola") {
+			if (success_message === "Ok! you have modified the function correctly") {
 			    document.getElementById('send-response-button').style.display = 'inline-block';
 			    document.getElementById('send-response-button').style.background = 'green';
 			    document.getElementById('send-response-button').style.cursor= 'pointer';
