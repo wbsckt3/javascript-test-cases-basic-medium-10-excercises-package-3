@@ -58,8 +58,16 @@ console.log(result); // Debería mostrar 'Advised argument 1, Advised argument 2
     </div>
     <div id="app-container">
         <div id="app">
-	    <strong>Ejercicio 1</strong>
-            <p style="font-size: 13px;">modifica la función para impimir en consola: <strong>Refactorii, 21</strong></p>
+	    <strong>Challenge: Aspect-Oriented Programming (AOP)</strong>
+            <p style="font-size: 13px;">Aspect-oriented programming (AOP) allows adding additional behavior (advice) to existing functionality without modifying the functionality itself. Your task is to create a method called adviseBefore which takes two arguments: a target function (target) and an advising function (advice).
+
+The adviseBefore method should return a new function that executes the advising function first, followed by the original method. The requirements are:
+
+The arguments passed to the returned function should be passed to the advising function.
+If the advising function returns an array, this array should replace the arguments passed to the original method.
+If the advising function does not return an array, the original arguments should be passed to the original method.
+The return value of the original method should be returned.
+This exercise tests your ability to work with higher-order functions, argument manipulation, and function composition in JavaScript.</strong></p>
 																																					 
             <div id="modify-message"></div>
 	    <button id="send-response-button" onClick= "guardarResultados()">Enviar respuesta</button>
