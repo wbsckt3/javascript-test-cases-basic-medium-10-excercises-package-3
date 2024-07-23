@@ -47,10 +47,6 @@ console.log('Array before sorting:', arrayToSort);
 const sortedArray = shape.sort(arrayToSort);
 console.log('Sorted array:', sortedArray);
 
-logToConsole('Array before sorting: ' + JSON.stringify(arrayToSort));
-const sortedArray = shape.sort(arrayToSort);
-logToConsole('Sorted array: ' + JSON.stringify(sortedArray));
-
         </textarea>
 	<img id="logo" src="https://wbsckt3.github.io/javascript-test-cases-basic-medium-10-excercises-package/logo_refactorii.png" alt="Logo Refactorii">
         <button id="run-button">Run</button>
@@ -153,15 +149,22 @@ logToConsole('Sorted array: ' + JSON.stringify(sortedArray));
             mocha.suite.suites = []; // Clear previous test cases
             // Get the user's code from the editor
             const userCode = editor.getValue();
+		
             // Redirect console.log to custom console
 	    const output = [];
-	    const originalConsoleLog = console.log;
+	    /*const originalConsoleLog = console.log;
 	    console.log = function(message) {
 		output.push(message);
 		logToConsole(message);
 	    };
 	    // Show "Ejecutando tests..." message and delay tests
-	    logToConsole('Running tests......', 'blue');
+	    logToConsole('Running tests......', 'blue');*/
+		console.log = function(...args) {
+                const message = args.join(' ');
+                originalConsoleLog.apply(console, args); // Still log to the original console
+                logToConsole(message);
+            };
+		
   	    setTimeout(() => {
             	// Evaluate the user's code
             	try {
