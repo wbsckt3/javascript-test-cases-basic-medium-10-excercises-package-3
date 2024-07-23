@@ -156,9 +156,9 @@ console.log('Sorted array:', sortedArray);
 	    /*console.log = function(message) {
 		output.push(message);
 		logToConsole(message);
-	    };
+	    };*/
 	    // Show "Ejecutando tests..." message and delay tests
-	    logToConsole('Running tests......', 'blue');*/
+	    logToConsole('Running tests......', 'green');
 		console.log = function(...args) {
                 const message = args.join(' ');
                 originalConsoleLog.apply(console, args); // Still log to the original console
