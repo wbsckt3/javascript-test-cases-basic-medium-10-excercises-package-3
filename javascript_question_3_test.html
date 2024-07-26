@@ -25,7 +25,27 @@
 <body>
     <div id="editor-container">
         <textarea id="code-editor">
+const shape = {
+  sequence(n, pattern) {
+    return Array.from({ length: n }, (element, index) => {
+      if (typeof pattern === 'function') {
+        return pattern(element, index);
+      }
+      return pattern;
+    });
+  },
+};
 
+// Example usage:
+console.log(shape.sequence(3, 4)); // [4, 4, 4]
+console.log(shape.sequence(5, [])); // [[], [], [], [], []]
+console.log(shape.sequence(2, "s")); // ["s", "s"]
+console.log(shape.sequence(5, (x, idx) => idx % 2)); // [0, 1, 0, 1, 0]
+console.log(shape.sequence(10, (x, idx) => idx + 1)); // [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+
+// Example with reduce:
+let sum = shape.sequence(10, (x, idx) => idx + 1).reduce((sum, num) => sum + num, 0);
+console.log(sum); // 55
         </textarea>
 		<img id="logo" src="logo_refactorii.png" alt="Logo Refactorii">
         <button id="run-button">Run</button>
