@@ -158,8 +158,8 @@ console.log(sum); // 55
   	    setTimeout(() => {
             	// Evaluate the user's code
             	try {
-                    const userFunction = new Function(userCode + '; return adviseBefore;');
-                    const adviseBefore = userFunction();
+                    const userFunction = new Function(userCode + '; return shape;');
+                    const shape = userFunction();
                     // Define test cases
                     const expect = chai.expect;
                     
