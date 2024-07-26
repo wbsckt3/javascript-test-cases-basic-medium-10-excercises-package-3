@@ -25,6 +25,39 @@
 <body>
     <div id="editor-container">
         <textarea id="code-editor">
+const shape = {
+  changeTime(time, delta) {
+    let [hours, minutes] = time.split(':').map(Number);
+
+    // Adjust minutes
+    minutes += delta;
+
+    // Handle minute overflow/underflow
+    if (minutes >= 60) {
+      minutes -= 60;
+      hours += 1;
+    } else if (minutes < 0) {
+      minutes += 60;
+      hours -= 1;
+    }
+
+    // Handle hour overflow/underflow
+    if (hours >= 24) {
+      hours = 0;
+    } else if (hours < 0) {
+      hours = 23;
+    }
+
+    // Format the output with leading zeros if necessary
+    return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
+  }
+};
+
+// Test cases
+console.log(shape.changeTime('10:00', 1));    // '10:01'
+console.log(shape.changeTime('10:00', -1));   // '09:59'
+console.log(shape.changeTime('23:59', 1));    // '00:00'
+console.log(shape.changeTime('00:00', -1));   // '23:59'
 
         </textarea>
 		<img id="logo" src="logo_refactorii.png" alt="Logo Refactorii">
