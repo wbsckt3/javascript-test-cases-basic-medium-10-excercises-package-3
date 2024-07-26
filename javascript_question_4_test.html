@@ -132,37 +132,35 @@ console.log(shape.changeTime('00:00', -1));   // '23:59'
         });
         
         var modal_click_message = `The solution involves several key concepts in JavaScript programming...`;
-        var error_message = `Concept Explanation:
-The solution involves several key concepts in JavaScript programming:
-
-Object-Oriented Design:
-The function changeTime is encapsulated within an object called shape. This is a common pattern in JavaScript where functions are grouped together in an object to represent a cohesive unit or module.
-
-String Manipulation:
-The changeTime function takes a time string in the format 'HH
-' and splits it into hours and minutes using the split(':') method. This method splits the string into an array based on the colon : separator.
-
-Array and Number Manipulation:
-The resulting array from split(':') contains string representations of the hours and minutes, which are then converted to numbers using map(Number). This ensures that arithmetic operations can be performed on these values.
-
-Handling Minute Overflow and Underflow:
-When the delta value is added to the minutes, the function checks if the minutes exceed 59 (overflow) or drop below 0 (underflow). If there is an overflow, the function subtracts 60 from the minutes and increments the hour. If there is an underflow, it adds 60 to the minutes and decrements the hour.
-
-Handling Hour Overflow and Underflow:
-Similarly, the function checks for hour overflow and underflow. If the hours exceed 23, it wraps around to 0 (indicating midnight). If the hours drop below 0, it wraps around to 23 (indicating the last hour of the previous day).
-
-Formatting Output:
-The output time is formatted as 'HH
-', with leading zeros added if necessary. This is done using the padStart(2, '0') method, which ensures that the hours and minutes are always two digits long.
-
-Example Usage
-The function is tested with different cases:
-
-Increasing the time by 1 minute.
-Decreasing the time by 1 minute.
-Handling the transition from 23:59 to 00:00.
-Handling the transition from 00:00 to 23:59.
-These cases demonstrate the function's ability to correctly adjust the time while handling boundary conditions.`;       
+        var error_message = `Concept Explanation:\n
+The solution involves several key concepts in JavaScript programming:\n
+\n
+Object-Oriented Design:\n
+The function changeTime is encapsulated within an object called shape. This is a common pattern in JavaScript where functions are grouped together in an object to represent a cohesive unit or module.\n
+\n
+String Manipulation:\n
+The changeTime function takes a time string in the format 'HH:MM' and splits it into hours and minutes using the split(':') method. This method splits the string into an array based on the colon ':' separator.\n
+\n
+Array and Number Manipulation:\n
+The resulting array from split(':') contains string representations of the hours and minutes, which are then converted to numbers using map(Number). This ensures that arithmetic operations can be performed on these values.\n
+\n
+Handling Minute Overflow and Underflow:\n
+When the delta value is added to the minutes, the function checks if the minutes exceed 59 (overflow) or drop below 0 (underflow). If there is an overflow, the function subtracts 60 from the minutes and increments the hour. If there is an underflow, it adds 60 to the minutes and decrements the hour.\n
+\n
+Handling Hour Overflow and Underflow:\n
+Similarly, the function checks for hour overflow and underflow. If the hours exceed 23, it wraps around to 0 (indicating midnight). If the hours drop below 0, it wraps around to 23 (indicating the last hour of the previous day).\n
+\n
+Formatting Output:\n
+The output time is formatted as 'HH:MM', with leading zeros added if necessary. This is done using the padStart(2, '0') method, which ensures that the hours and minutes are always two digits long.\n
+\n
+Example Usage:\n
+The function is tested with different cases:\n
+\n
+Increasing the time by 1 minute.\n
+Decreasing the time by 1 minute.\n
+Handling the transition from 23:59 to 00:00.\n
+Handling the transition from 00:00 to 23:59.\n
+These cases demonstrate the function's ability to correctly adjust the time while handling boundary conditions.`;  
 	var success_message = `🎉🎉 Congratulations! You've successfully completed the test! 🚀👏 Keep up the great work and continue pushing your limits. You're doing amazing! 
        🌟 #KeepCoding #AchievementUnlocked 🎉🎉`
         
