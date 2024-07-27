@@ -44,8 +44,7 @@ functionsArray.forEach(func => console.log(func())); // Should print 0, 1, 2, 3,
     <div id="app-container">
         <div id="app">
 	    <h5>Exercise 5: Closures in javascript</h5>
-            <p>modifica la función para impimir en consola: <strong>Refactorii, 21</strong></p>
-            <div id="modify-message"></div>
+            <div id="modify-message">A closure is a function that retains access to its lexical scope, even when the function...</div>
 	    <button id="send-response-button" onClick= "guardarResultados()">Send response</button>
         </div>
     </div>
@@ -109,7 +108,7 @@ functionsArray.forEach(func => console.log(func())); // Should print 0, 1, 2, 3,
             scrollbarStyle: 'null'
         });
         
-        var modal_click_message = `The solution involves several key concepts in JavaScript programming...`;
+        var modal_click_message = `A closure is a function that retains access to its lexical scope, even when the function...`;
         var error_message = `Concept Explanation:<br><br>
 
 A closure is a function that retains access to its lexical scope, even when the function is executed outside that scope. This feature allows the inner function to "remember" the environment in which it was created.
@@ -123,8 +122,8 @@ Test Case:
 We create an array of functions by calling shape.buildFun(5).<br>
 We then iterate over this array and invoke each function, printing the result to the console.<br>
 The expected output is the sequence of numbers from 0 to N-1.`;  
-	var success_message = `🎉🎉 Congratulations! You've successfully completed the test! 🚀👏 Keep up the great work and continue pushing your limits. You're doing amazing! 
-       🌟 #KeepCoding #AchievementUnlocked 🎉🎉`
+	var success_message = `🎉 Awesome job! You've nailed it! 🚀 Your hard work and dedication are paying off. Keep up the great work, 
+        and don't hesitate to submit your answer! 💪🌟 #CodingHero #KeepGoing`
         
         // Función para mostrar el modal con el mensaje de error
         document.getElementById('modify-message').addEventListener('click', function() {
