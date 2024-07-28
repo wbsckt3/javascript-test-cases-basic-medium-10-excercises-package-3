@@ -25,6 +25,38 @@
 <body>
     <div id="editor-container">
         <textarea id="code-editor">
+const shape = {
+  generateArray() {
+    const rows = 10;
+    const cols = 10;
+    const letters = ['A', 'B', 'C', 'D'];
+    let array = [];
+
+    for (let i = 0; i < rows; i++) {
+      let row = [];
+      let usedLetters = new Set();
+      // Ensure each letter is used at least once in the row
+      while (usedLetters.size < letters.length) {
+        const letter = letters[Math.floor(Math.random() * letters.length)];
+        if (!usedLetters.has(letter)) {
+          usedLetters.add(letter);
+          row.push(letter);
+        }
+      }
+      // Fill the rest of the row with random letters
+      while (row.length < cols) {
+        row.push(letters[Math.floor(Math.random() * letters.length)]);
+      }
+      // Shuffle the row to randomize the order of letters
+      row = row.sort(() => Math.random() - 0.5);
+      array.push(row);
+    }
+
+    return array;
+  }
+};
+// Print the array to console
+console.log(shape.generateArray());
 
         </textarea>
 		<img id="logo" src="logo_refactorii.png" alt="Logo Refactorii">
@@ -32,10 +64,9 @@
     </div>
     <div id="app-container">
         <div id="app">
-		    <h5>Ejercicio 1</h5>
-            <p>modifica la función para impimir en consola: <strong>Refactorii, 21</strong></p>
-            <div id="modify-message"></div>
-	    <button id="send-response-button" onClick= "guardarResultados()">Enviar respuesta</button>
+	    <h5>Array manipulation and randomization </h5>            
+            <div id="modify-message">challenge of creating a 10x10 array with random 'A', 'B', 'C', and 'D' values, ensuring that each row contains at least one occurrence of each letter. </div>
+	    <button id="send-response-button" onClick= "guardarResultados()">Send Response</button>
         </div>
     </div>
     <div id="console-container"><div id="console"></div></div>
@@ -47,7 +78,7 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="errorMessageModalLabel">Error Message</h5>
+                    <h5 class="modal-title" id="errorMessageModalLabel">Concept Explanation</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -56,7 +87,7 @@
                     <!-- Contenido del mensaje de error -->
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>
@@ -99,11 +130,14 @@
             scrollbarStyle: 'null'
         });
         
-        var modal_click_message = `This problem challenges you to continue coding the function to sort an array of positive integers...`;
-        var error_message = `This problem challenges you to continue coding the function to sort an array of positive integers using the Bubble Sort method. 
-		The implementation should be done within a shape object, with a sort function that takes an array as an argument and returns the sorted array.`;       
-	var success_message = `🎉 Well done on completing the challenge! Your hard work and dedication are paying off! 🚀🌟 Now, it's time to share your success. 
-        Hit the "Send" button and let your accomplishments shine! 💪📬 #ProudMoment #KeepGrowing`
+        var modal_click_message = ``;
+        var error_message = `Array Creation: The function generateArray creates a 10x10 array filled with the letters 'A', 'B', 'C', and 'D'.
+<br><br>Random Filling and Constraints: It ensures that each row contains at least one occurrence of each letter by first adding each letter to the row, then filling the remaining slots with randomly selected letters.
+<br><br>Shuffling: To maintain randomness, the function shuffles the row after ensuring all letters are present.<br><br>
+Real-life Applications:<br><br
+This challenge simulates situations where you need to generate or manipulate structured data, such as seating arrangements, game board designs, or randomized test cases. Understanding these concepts is crucial for roles in data science, software development, and any field involving algorithmic problem-solving.`;       
+	var success_message = `🎉 Well done on completing the challenge! You've not only mastered array manipulation and randomization but also gained valuable skills for real-world applications. 
+        Keep pushing your limits and exploring new challenges! 🚀`
         
         // Función para mostrar el modal con el mensaje de error
         document.getElementById('modify-message').addEventListener('click', function() {
@@ -152,39 +186,19 @@
                     const shape = userFunction();
                     // Define test cases
                     const expect = chai.expect;
-                    describe('JavaScript Code Tests', function() {
-                    
-	it('should sort an array of numbers in ascending order', function() {
-      const arrayToSort = [5, 2, 9, 1, 5];
-      const sortedArray = shape.sort(arrayToSort);
-      expect(sortedArray).to.deep.equal([1, 2, 5, 5, 9]);
-    });
 
-    it('should return an empty array when given an empty array', function() {
-      const arrayToSort = [];
-      const sortedArray = shape.sort(arrayToSort);
-      expect(sortedArray).to.deep.equal([]);
+describe('shape.generateArray()', function() {
+  it('should generate a 10x10 array where each row contains A, B, C, and D at least once', function() {
+    const array = shape.generateArray();
+    const letters = ['A', 'B', 'C', 'D'];
+    array.forEach(row => {
+      letters.forEach(letter => {
+        expect(row.includes(letter)).to.be.true;
+      });
     });
+  });
+});
 
-    it('should return the same array when it is already sorted', function() {
-      const arrayToSort = [1, 2, 3, 4, 5];
-      const sortedArray = shape.sort(arrayToSort);
-      expect(sortedArray).to.deep.equal([1, 2, 3, 4, 5]);
-    });
-
-    it('should handle an array with negative numbers', function() {
-      const arrayToSort = [3, -2, -1, 4, 0];
-      const sortedArray = shape.sort(arrayToSort);
-      expect(sortedArray).to.deep.equal([-2, -1, 0, 3, 4]);
-    });
-
-    it('should handle an array with duplicate numbers', function() {
-      const arrayToSort = [3, 2, 2, 1, 3];
-      const sortedArray = shape.sort(arrayToSort);
-      expect(sortedArray).to.deep.equal([1, 2, 2, 3, 3]);
-    });
-
-                });  // end describe
 
 		// Variable para rastrear el estado de los tests
                 let allTestsPassed = true;	
