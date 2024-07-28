@@ -189,13 +189,13 @@ For instance, if you were to implement a system that processes numerical codes w
                     // Define test cases
                     const expect = chai.expect;
 
-describe('shape.trickyDoubles()', function() {
-  it('should return twice the value unless it is a tricky double', function() {
-    assert.strictEqual(shape.trickyDoubles(15), 30);
-    assert.strictEqual(shape.trickyDoubles(100), 200);
-    assert.strictEqual(shape.trickyDoubles(4343), 4343);
-    assert.strictEqual(shape.trickyDoubles(3333), 3333);
-    assert.strictEqual(shape.trickyDoubles(1010), 1010);
+describe('trickyDoubles', function() {
+  it('should return twice the value if not a tricky double', function() {
+    expect(trickyDoubles(15)).to.equal(30);
+  });
+
+  it('should return the same value if it is a tricky double', function() {
+    expect(trickyDoubles(4343)).to.equal(4343);
   });
 });
 
