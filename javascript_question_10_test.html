@@ -191,13 +191,14 @@ For instance, if you were to implement a system that processes numerical codes w
 
 describe('shape.trickyDoubles', function() {
   it('should return twice the value if not a tricky double', function() {
-    expect(trickyDoubles(15)).to.equal(30);
+    expect(shape.trickyDoubles(15)).to.equal(30);
   });
 
   it('should return the same value if it is a tricky double', function() {
-    expect(trickyDoubles(4343)).to.equal(4343);
+    expect(shape.trickyDoubles(4343)).to.equal(4343);
   });
 });
+
 
 		// Variable para rastrear el estado de los tests
                 let allTestsPassed = true;	
