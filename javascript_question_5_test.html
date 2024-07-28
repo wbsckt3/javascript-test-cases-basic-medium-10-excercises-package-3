@@ -175,7 +175,8 @@ describe('shape.buildFun()', function() {
   });
 });
 			
-
+		// Variable para rastrear el estado de los tests
+                let allTestsPassed = true;	
                 // Run Mocha tests
                 mocha.run()
                     .on('test', function(test) {
@@ -196,18 +197,17 @@ describe('shape.buildFun()', function() {
 			runButton.onclick = function() {
 			    window.location.reload();
 			};
+			allTestsPassed = false; // Si cualquier test falla, actualizamos la variable	
 		     })
 		     .on('end', function() {
 			logToConsole('• All tests finished!');
 			document.getElementById('modify-message').innerText = success_message;
 			document.getElementById('modify-message').style.display = 'block';
 			document.getElementById('modify-message').style.color = 'black';
-			if (success_message === "Ok! you have modified the function correctly") {
-			    document.getElementById('send-response-button').style.display = 'inline-block';
-			    document.getElementById('send-response-button').style.background = 'green';
-			    document.getElementById('send-response-button').style.cursor= 'pointer';
-			    document.getElementById('send-response-button').style.color= 'white';
-		        }
+			if (allTestsPassed) {
+		               const sendResponseButton = document.getElementById('send-response-button');
+		               sendResponseButton.classList.add('enabled');
+		        } 
 		     });
 
             } catch (e) {
