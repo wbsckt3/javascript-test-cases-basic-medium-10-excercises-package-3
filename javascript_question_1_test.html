@@ -130,12 +130,13 @@ console.log(result); // Debería mostrar 'Advised argument 1, Advised argument 2
         
         var modal_click_message = `Aspect-oriented programming (AOP) allows adding additional behavior...`;
         var error_message = `Aspect-oriented programming (AOP) allows adding additional behavior (advice) to existing functionality without modifying the functionality itself. Your task is to create a method called adviseBefore which takes two arguments: a target function (target) and an advising function (advice).
-The adviseBefore method should return a new function that executes the advising function first, followed by the original method. The requirements are:
-The arguments passed to the returned function should be passed to the advising function.
-If the advising function returns an array, this array should replace the arguments passed to the original method.
-If the advising function does not return an array, the original arguments should be passed to the original method.
-The return value of the original method should be returned.
-This exercise tests your ability to work with higher-order functions, argument manipulation, and function composition in JavaScript.</strong>`;       
+The adviseBefore method should return a new function that executes the advising function first, followed by the original method. 
+<br><br>The requirements are:
+- The arguments passed to the returned function should be passed to the advising function.<br>
+- If the advising function returns an array, this array should replace the arguments passed to the original method.<br>
+- If the advising function does not return an array, the original arguments should be passed to the original method.<br>
+- The return value of the original method should be returned.<br><br>
+This exercise tests your ability to work with higher-order functions, argument manipulation, and function composition in JavaScript.`;       
 	var success_message = `👏 Fantastic work on conquering the challenge! 🌈✨ Your skills are growing stronger every day. Now, don't hesitate—send in your solution and celebrate 
         your progress! 🚀📚 #KeepLearning #GreatJob`
         
