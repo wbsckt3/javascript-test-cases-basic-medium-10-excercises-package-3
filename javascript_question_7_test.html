@@ -25,6 +25,25 @@
 <body>
     <div id="editor-container">
         <textarea id="code-editor">
+const shape = {
+  repeatSum(listOfLists) {
+    const elementCount = {};
+    // Count occurrences of each number
+    listOfLists.forEach(list => {
+      new Set(list).forEach(num => {
+        elementCount[num] = (elementCount[num] || 0) + 1;
+      });
+    });
+    // Filter numbers that appear in two or more lists and sum them
+    return Object.keys(elementCount)
+      .filter(key => elementCount[key] > 1)
+      .reduce((sum, key) => sum + parseInt(key), 0);
+  }
+};
+// Test cases
+console.log(shape.repeatSum([[1, 2, 3], [2, 8, 9], [7, 123, 8]])); // Should return 10 (2 + 8)
+console.log(shape.repeatSum([[1], [2], [3, 4, 4, 4], [123456789]])); // Should return 0
+console.log(shape.repeatSum([[1, 8, 8], [8, 8, 8], [8, 8, 8, 1]])); // Should return 9 (1 + 8)
 
         </textarea>
 		<img id="logo" src="logo_refactorii.png" alt="Logo Refactorii">
@@ -32,10 +51,9 @@
     </div>
     <div id="app-container">
         <div id="app">
-		    <h5>Ejercicio 1</h5>
-            <p>modifica la función para impimir en consola: <strong>Refactorii, 21</strong></p>
-            <div id="modify-message"></div>
-	    <button id="send-response-button" onClick= "guardarResultados()">Enviar respuesta</button>
+	    <h5>Sum the repeats: finding common elements across multiple lists and summing them up</h5>
+            <div id="modify-message">To solve this problem, we need to create a function that takes a list of lists and returns the sum of numbers that appear in two or more sublists. </div>
+	    <button id="send-response-button" onClick= "guardarResultados()">Send Response</button>
         </div>
     </div>
     <div id="console-container"><div id="console"></div></div>
@@ -47,7 +65,7 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="errorMessageModalLabel">Error Message</h5>
+                    <h5 class="modal-title" id="errorMessageModalLabel">Concept</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -56,7 +74,7 @@
                     <!-- Contenido del mensaje de error -->
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>
@@ -99,11 +117,21 @@
             scrollbarStyle: 'null'
         });
         
-        var modal_click_message = `This problem challenges you to continue coding the function to sort an array of positive integers...`;
-        var error_message = `This problem challenges you to continue coding the function to sort an array of positive integers using the Bubble Sort method. 
-		The implementation should be done within a shape object, with a sort function that takes an array as an argument and returns the sorted array.`;       
-	var success_message = `🎉 Well done on completing the challenge! Your hard work and dedication are paying off! 🚀🌟 Now, it's time to share your success. 
-        Hit the "Send" button and let your accomplishments shine! 💪📬 #ProudMoment #KeepGrowing`
+        var modal_click_message = ``;
+        var error_message = `Counting Occurrences: The function iterates through each list in listOfLists and counts occurrences of each number using a Set to avoid counting duplicates within the same list.
+Filtering and Summing: It then filters the numbers that appear in two or more lists and sums them.<br><br>
+The concept studied in this challenge revolves around the idea of finding common elements across multiple lists and summing them up. This involves a few key principles:
+<br><br>
+Intersection of Lists: The core task is to identify elements that appear in more than one list within a collection of lists. This requires understanding how to compare and find commonalities across different sets of data.
+<br><br>
+Set Operations: The use of sets, which are data structures that store unique elements, is crucial for efficiently determining which elements are repeated across the lists.
+<br><br>
+Summation: Once the common elements are identified, the next step is to sum them up, demonstrating a practical use of basic arithmetic operations in programming.
+<br><br>
+Data Aggregation: The problem also touches on data aggregation techniques, which are common in data analysis and processing tasks, where you often need to consolidate and analyze data from multiple sources.
+<br><br>
+Overall, the exercise emphasizes problem-solving skills, particularly in data manipulation, analysis, and the use of collections and set operations in programming.`;       
+	var success_message = `🎉 Congratulations! 🎉 You've successfully solved the challenge involving repeated numbers across lists. This skill isn't just a coding exercise; it has real-world applications!`
         
         // Función para mostrar el modal con el mensaje de error
         document.getElementById('modify-message').addEventListener('click', function() {
@@ -152,39 +180,15 @@
                     const shape = userFunction();
                     // Define test cases
                     const expect = chai.expect;
-                    describe('JavaScript Code Tests', function() {
-                    
-	it('should sort an array of numbers in ascending order', function() {
-      const arrayToSort = [5, 2, 9, 1, 5];
-      const sortedArray = shape.sort(arrayToSort);
-      expect(sortedArray).to.deep.equal([1, 2, 5, 5, 9]);
-    });
-
-    it('should return an empty array when given an empty array', function() {
-      const arrayToSort = [];
-      const sortedArray = shape.sort(arrayToSort);
-      expect(sortedArray).to.deep.equal([]);
-    });
-
-    it('should return the same array when it is already sorted', function() {
-      const arrayToSort = [1, 2, 3, 4, 5];
-      const sortedArray = shape.sort(arrayToSort);
-      expect(sortedArray).to.deep.equal([1, 2, 3, 4, 5]);
-    });
-
-    it('should handle an array with negative numbers', function() {
-      const arrayToSort = [3, -2, -1, 4, 0];
-      const sortedArray = shape.sort(arrayToSort);
-      expect(sortedArray).to.deep.equal([-2, -1, 0, 3, 4]);
-    });
-
-    it('should handle an array with duplicate numbers', function() {
-      const arrayToSort = [3, 2, 2, 1, 3];
-      const sortedArray = shape.sort(arrayToSort);
-      expect(sortedArray).to.deep.equal([1, 2, 2, 3, 3]);
-    });
-
-                });  // end describe
+			
+   describe('shape.repeatSum()', function() {
+  it('should return the correct sum of numbers appearing in two or more lists', function() {
+    expect(shape.repeatSum([[1, 2, 3], [2, 8, 9], [7, 123, 8]])).to.eql(10);
+    expect(shape.repeatSum([[1], [2], [3, 4, 4, 4], [123456789]])).to.eql(0);
+    expect(shape.repeatSum([[1, 8, 8], [8, 8, 8], [8, 8, 8, 1]])).to.eql(9);
+  });
+});
+                
 
 		// Variable para rastrear el estado de los tests
                 let allTestsPassed = true;	
