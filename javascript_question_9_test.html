@@ -25,6 +25,44 @@
 <body>
     <div id="editor-container">
         <textarea id="code-editor">
+// Define the shape object containing the function
+const shape = {
+  permutation_average(n) {
+    // Convert number to string and split into digits
+    const digits = n.toString().split('');
+    // Function to calculate factorial
+    const factorial = (num) => {
+      if (num <= 1) return 1;
+      return num * factorial(num - 1);
+    };
+    // Generate all permutations of the digits
+    const generatePermutations = (arr) => {
+      if (arr.length === 1) return [arr];
+      const permutations = [];
+      for (let i = 0; i < arr.length; i++) {
+        const remaining = [...arr.slice(0, i), ...arr.slice(i + 1)];
+        for (const perm of generatePermutations(remaining)) {
+          permutations.push([arr[i], ...perm]);
+        }
+      }
+      return permutations;
+    };
+    // Get all permutations and sum them
+    const permutations = generatePermutations(digits);
+    const sumOfPermutations = permutations.reduce((sum, perm) => {
+      return sum + parseInt(perm.join(''), 10);
+    }, 0);
+    // Calculate the average and round to the nearest integer
+    const average = sumOfPermutations / permutations.length;
+    return Math.round(average);
+  }
+};
+// Test cases
+console.log(shape.permutation_average(2));    // Output: 2
+console.log(shape.permutation_average(25));   // Output: 39
+console.log(shape.permutation_average(20));   // Output: 11
+console.log(shape.permutation_average(737));  // Output: 629
+console.log(shape.permutation_average(1256)); // Output: 3889
 
         </textarea>
 		<img id="logo" src="logo_refactorii.png" alt="Logo Refactorii">
@@ -32,10 +70,10 @@
     </div>
     <div id="app-container">
         <div id="app">
-		    <h5>Ejercicio 1</h5>
-            <p>modifica la función para impimir en consola: <strong>Refactorii, 21</strong></p>
-            <div id="modify-message"></div>
-	    <button id="send-response-button" onClick= "guardarResultados()">Enviar respuesta</button>
+	    <h5>Permutation Average</h5>
+            <div id="modify-message">To solve this challenge, we'll create a function permutation_average 
+		    that calculates the average of all distinct permutations of the digits in a given number n. </div>
+	    <button id="send-response-button" onClick= "guardarResultados()">Send Response</button>
         </div>
     </div>
     <div id="console-container"><div id="console"></div></div>
@@ -47,7 +85,7 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="errorMessageModalLabel">Error Message</h5>
+                    <h5 class="modal-title" id="errorMessageModalLabel">Concept Explanation</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -56,7 +94,7 @@
                     <!-- Contenido del mensaje de error -->
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>
@@ -99,11 +137,18 @@
             scrollbarStyle: 'null'
         });
         
-        var modal_click_message = `This problem challenges you to continue coding the function to sort an array of positive integers...`;
-        var error_message = `This problem challenges you to continue coding the function to sort an array of positive integers using the Bubble Sort method. 
-		The implementation should be done within a shape object, with a sort function that takes an array as an argument and returns the sorted array.`;       
-	var success_message = `🎉 Well done on completing the challenge! Your hard work and dedication are paying off! 🚀🌟 Now, it's time to share your success. 
-        Hit the "Send" button and let your accomplishments shine! 💪📬 #ProudMoment #KeepGrowing`
+        var modal_click_message = ``;
+        var error_message = `Digit Extraction: The function converts the number to a string and splits it into individual digits.
+<br><br>
+Permutation Generation: It uses a recursive function to generate all possible permutations of these digits.
+<br><br>
+Summing Permutations: It then calculates the sum of all distinct permutations by converting each permutation back to a number and summing them up.
+<br><br>
+Average Calculation: Finally, the average of these numbers is computed and rounded to the nearest integer.`;       
+	var success_message = `🎉 Congratulations! 🎉 You've successfully tackled a complex problem involving permutations and averages.
+ It's no small feat to handle both number manipulation and understanding how permutations work in programming. 
+ This challenge required a deep understanding of recursion, array manipulation, and mathematical calculations. 
+ You've shown great skill and determination—skills.. Keep up the fantastic work! 🌟💪`
         
         // Función para mostrar el modal con el mensaje de error
         document.getElementById('modify-message').addEventListener('click', function() {
@@ -152,39 +197,17 @@
                     const shape = userFunction();
                     // Define test cases
                     const expect = chai.expect;
-                    describe('JavaScript Code Tests', function() {
-                    
-	it('should sort an array of numbers in ascending order', function() {
-      const arrayToSort = [5, 2, 9, 1, 5];
-      const sortedArray = shape.sort(arrayToSort);
-      expect(sortedArray).to.deep.equal([1, 2, 5, 5, 9]);
-    });
 
-    it('should return an empty array when given an empty array', function() {
-      const arrayToSort = [];
-      const sortedArray = shape.sort(arrayToSort);
-      expect(sortedArray).to.deep.equal([]);
-    });
-
-    it('should return the same array when it is already sorted', function() {
-      const arrayToSort = [1, 2, 3, 4, 5];
-      const sortedArray = shape.sort(arrayToSort);
-      expect(sortedArray).to.deep.equal([1, 2, 3, 4, 5]);
-    });
-
-    it('should handle an array with negative numbers', function() {
-      const arrayToSort = [3, -2, -1, 4, 0];
-      const sortedArray = shape.sort(arrayToSort);
-      expect(sortedArray).to.deep.equal([-2, -1, 0, 3, 4]);
-    });
-
-    it('should handle an array with duplicate numbers', function() {
-      const arrayToSort = [3, 2, 2, 1, 3];
-      const sortedArray = shape.sort(arrayToSort);
-      expect(sortedArray).to.deep.equal([1, 2, 2, 3, 3]);
-    });
-
-                });  // end describe
+// Test suite
+describe('shape.permutation_average', function() {
+  it('should return the average of all distinct permutations of the digits', function() {
+    expect(shape.permutation_average(2)).to.equal(2);
+    expect(shape.permutation_average(25)).to.equal(39);
+    expect(shape.permutation_average(20)).to.equal(11);
+    expect(shape.permutation_average(737)).to.equal(629);
+    expect(shape.permutation_average(1256)).to.equal(3889);
+  });
+});
 
 		// Variable para rastrear el estado de los tests
                 let allTestsPassed = true;	
