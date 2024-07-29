@@ -218,6 +218,29 @@ These tests help ensure that the adapter pattern implementation and its extensio
 // Test suite for Composite Adapter
 describe('shape.CompositeAdapter', function() {
 
+   // Define the classes within the test suite
+  class Marine {
+    attack(target) {
+      target.health -= 6;
+    }
+  }
+  class Zealot {
+    attack(target) {
+      target.health -= 8;
+    }
+  }
+  class Zergling {
+    attack(target) {
+      target.health -= 5;
+    }
+  }
+  class Mario {
+    jumpAttack() {
+      console.log('Mamamia!');
+      return 3;
+    }
+  }
+	
   // Test to check if the composite adapter correctly handles multiple attacks
   it('should correctly handle attacks from multiple units', function() {
     // Set up the target with initial health
