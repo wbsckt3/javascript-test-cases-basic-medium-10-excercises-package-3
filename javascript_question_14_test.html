@@ -255,17 +255,17 @@ describe('shape.MarioPowerUpDecorator', function() {
     }
   }
 	
-  it('should increase damage dealt by MarioAdapter', function() {
+ it('should correctly adapt Mario\'s jumpAttack to the attack interface', function() {
     const target = { health: 100 };
     const mario = new Mario();
     const marioAdapter = new shape.MarioAdapter(mario);
     const poweredUpMarioAdapter = new shape.MarioPowerUpDecorator(marioAdapter);
 
     poweredUpMarioAdapter.attack(target);
-    assert.equal(target.health, 89, "Expected target's health to decrease by 11 (9 from Mario + 2 from power-up)");
+    console.log(`Target health after Mario's attack with power-up: ${target.health}`);
+    assert.strictEqual(target.health, 89); // Expecting total damage to be 11 (3 from jumpAttack + 8 from power-up)
   });
 });
-
 
 		// Variable para rastrear el estado de los tests
                 let allTestsPassed = true;	
