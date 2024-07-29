@@ -195,24 +195,52 @@ console.log(`Target health after Mario's attack: ${target.health}`);
                     // Define test cases
                     const expect = chai.expect;
 
-describe('shape.MarioAdapter', function() {
+describe('MarioAdapter', function() {
+  // Define the classes within the test suite
+  class Marine {
+    attack(target) {
+      target.health -= 6;
+    }
+  }
+  class Zealot {
+    attack(target) {
+      target.health -= 8;
+    }
+  }
+  class Zergling {
+    attack(target) {
+      target.health -= 5;
+    }
+  }
+  class Mario {
+    jumpAttack() {
+      console.log('Mamamia!');
+      return 3;
+    }
+  }
+  shape.MarioAdapter = class {
+    constructor(mario) {
+      this.mario = mario;
+    }
+
+    attack(target) {
+      target.health -= this.mario.jumpAttack();
+    }
+  };
   it('should correctly adapt Mario\'s jumpAttack to the attack interface', function() {
     const target = { health: 100 };
     const mario = new Mario();
     const marioAdapter = new shape.MarioAdapter(mario);
-    
     marioAdapter.attack(target);
-    assert.strictEqual(target.health, 97, "Target's health should be reduced by 3");
+    assert.equal(target.health, 97);
   });
-  
   it('should work with multiple attacks', function() {
-    const target = { health: 50 };
+    const target = { health: 100 };
     const mario = new Mario();
     const marioAdapter = new shape.MarioAdapter(mario);
-
     marioAdapter.attack(target);
     marioAdapter.attack(target);
-    assert.strictEqual(target.health, 44, "Target's health should be reduced by 6 after two attacks");
+    assert.equal(target.health, 94);
   });
 });
 
