@@ -25,48 +25,43 @@
 <body>
     <div id="editor-container">
         <textarea id="code-editor">
+// Clases base
 class Marine {
   attack(target) {
     target.health -= 6;
   }
 }
-
 class Zealot {
   attack(target) {
     target.health -= 8;
   }
 }
-
 class Zergling {
   attack(target) {
     target.health -= 5;
   }
 }
-
 class Mario {
   jumpAttack() {
     console.log('Mamamia!');
     return 3;
   }
 }
-
+// Aseguramos que shape esté definido
 var shape = shape || {};
-
+// Envolvemos MarioAdapter dentro de shape
 shape.MarioAdapter = class {
   constructor(mario) {
     this.mario = mario;
   }
-
   attack(target) {
     target.health -= this.mario.jumpAttack();
   }
 };
-
-// Example usage:
+// Ejemplo de uso:
 const target = { health: 100 };
 const mario = new Mario();
 const marioAdapter = new shape.MarioAdapter(mario);
-
 marioAdapter.attack(target);
 console.log(`Target health after Mario's attack: ${target.health}`);
         </textarea>
