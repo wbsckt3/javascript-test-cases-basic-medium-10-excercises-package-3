@@ -25,7 +25,7 @@
 <body>
     <div id="editor-container">
         <textarea id="code-editor">
-// Base classes
+// Base Classes
 class Marine {
   attack(target) {
     target.health -= 6;
@@ -41,36 +41,67 @@ class Zergling {
     target.health -= 5;
   }
 }
+// Mario and Attack Strategies
 class Mario {
-  jumpAttack() {
+  constructor() {
+    this.attackStrategy = new StandardAttack();
+  }
+  setAttackStrategy(strategy) {
+    this.attackStrategy = strategy;
+  }
+  attack(target) {
+    target.health -= this.attackStrategy.execute();
+  }
+}
+class StandardAttack {
+  execute() {
     console.log('Mamamia!');
     return 3;
   }
 }
-// Ensure 'shape' is defined
+class PowerUpAttack {
+  execute() {
+    console.log('Super Mamamia!');
+    return 6;
+  }
+}
+class UltimateAttack {
+  execute() {
+    console.log('Ultimate Mamamia!');
+    return 10;
+  }
+}
+// Ensure shape is defined
 var shape = shape || {};
-// Wrap MarioAdapter within 'shape'
+// MarioAdapter: Adapts Mario's attack strategy
 shape.MarioAdapter = class {
   constructor(mario) {
     this.mario = mario;
   }
   attack(target) {
-    target.health -= this.mario.jumpAttack();
+    this.mario.attack(target);
   }
 };
-// Test case
+// Example usage:
 const target = { health: 100 };
 const mario = new Mario();
+// Set different strategies
+mario.setAttackStrategy(new StandardAttack()); // Change strategy as needed
 const marioAdapter = new shape.MarioAdapter(mario);
 marioAdapter.attack(target);
 console.log(`Target health after Mario's attack: ${target.health}`);
+// Set another strategy and attack
+mario.setAttackStrategy(new UltimateAttack());
+marioAdapter.attack(target);
+console.log(`Target health after Mario's ultimate attack: ${target.health}`);
+
         </textarea>
-		<img id="logo" src="logo_refactorii.png" alt="Logo Refactorii">
+	<img id="logo" src="logo_refactorii.png" alt="Logo Refactorii">
         <button id="run-button">Run</button>
     </div>
     <div id="app-container">
         <div id="app">
-	    <h5>Challenge: Implementing the Adapter Design Pattern</h5>
+	    <h5>Challenge: Strategy Pattern</h5>
             <div id="modify-message">The Adapter Design Pattern allows integrating an external character or component into an existing system, ...</div>
 	    <button id="send-response-button" onClick= "guardarResultados()">Send Response</button>
         </div>
@@ -196,7 +227,8 @@ console.log(`Target health after Mario's attack: ${target.health}`);
                     const expect = chai.expect;
 		    const assert = chai.assert;	
 
-describe('MarioAdapter', function() {
+describe('MarioAdapter with Strategy Pattern', function() {
+
   // Define the classes within the test suite
   class Marine {
     attack(target) {
@@ -219,29 +251,39 @@ describe('MarioAdapter', function() {
       return 3;
     }
   }
-  shape.MarioAdapter = class {
-    constructor(mario) {
-      this.mario = mario;
-    }
+	
+	
+  it('should correctly apply the StandardAttack strategy', function() {
+    const target = { health: 100 };
+    const mario = new Mario();
+    mario.setAttackStrategy(new StandardAttack());
+    const marioAdapter = new shape.MarioAdapter(mario);
 
-    attack(target) {
-      target.health -= this.mario.jumpAttack();
-    }
-  };
-  it('should correctly adapt Mario\'s jumpAttack to the attack interface', function() {
-    const target = { health: 100 };
-    const mario = new Mario();
-    const marioAdapter = new shape.MarioAdapter(mario);
     marioAdapter.attack(target);
-    assert.equal(target.health, 97);
+    console.log(`Target health after Mario's standard attack: ${target.health}`);
+    assert.strictEqual(target.health, 97); // 100 - 3
   });
-  it('should work with multiple attacks', function() {
+
+  it('should correctly apply the PowerUpAttack strategy', function() {
     const target = { health: 100 };
     const mario = new Mario();
+    mario.setAttackStrategy(new PowerUpAttack());
     const marioAdapter = new shape.MarioAdapter(mario);
+
     marioAdapter.attack(target);
+    console.log(`Target health after Mario's power-up attack: ${target.health}`);
+    assert.strictEqual(target.health, 94); // 100 - 6
+  });
+
+  it('should correctly apply the UltimateAttack strategy', function() {
+    const target = { health: 100 };
+    const mario = new Mario();
+    mario.setAttackStrategy(new UltimateAttack());
+    const marioAdapter = new shape.MarioAdapter(mario);
+
     marioAdapter.attack(target);
-    assert.equal(target.health, 94);
+    console.log(`Target health after Mario's ultimate attack: ${target.health}`);
+    assert.strictEqual(target.health, 90); // 100 - 10
   });
 });
 
