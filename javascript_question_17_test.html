@@ -26,53 +26,36 @@
 <body>
     <div id="editor-container">
         <textarea id="code-editor">
-// Base classes
-class Marine {
-  attack(target) {
-    target.health -= 6;
-  }
-}
-class Zealot {
-  attack(target) {
-    target.health -= 8;
-  }
-}
-class Zergling {
-  attack(target) {
-    target.health -= 5;
-  }
-}
-class Mario {
-  jumpAttack() {
-    console.log('Mamamia!');
-    return 3;
-  }
-}
-// Ensure 'shape' is defined
 var shape = shape || {};
-// Wrap MarioAdapter within 'shape'
-shape.MarioAdapter = class {
-  constructor(mario) {
-    this.mario = mario;
-  }
-  attack(target) {
-    target.health -= this.mario.jumpAttack();
-  }
+shape.primes = function(start, end) {
+    // Helper function to check if a number is prime
+    function isPrime(num) {
+        if (num <= 1) return false;
+        if (num <= 3) return true;
+        if (num % 2 === 0 || num % 3 === 0) return false;
+        for (let i = 5; i * i <= num; i += 6) {
+            if (num % i === 0 || num % (i + 2) === 0) return false;
+        }
+        return true;
+    }
+    // Array to store the prime numbers
+    const primesArray = [];
+    for (let i = start; i <= end; i++) {
+        if (isPrime(i)) {
+            primesArray.push(i);
+        }
+    }
+    // Return null if no prime numbers are found
+    return primesArray.length > 0 ? primesArray : null;
 };
-// Test case
-const target = { health: 100 };
-const mario = new Mario();
-const marioAdapter = new shape.MarioAdapter(mario);
-marioAdapter.attack(target);
-console.log(`Target health after Mario's attack: ${target.health}`);
         </textarea>
 		<img id="logo" src="logo_refactorii.png" alt="Logo Refactorii">
         <button id="run-button">Run</button>
     </div>
     <div id="app-container">
         <div id="app">
-	    <h5>Challenge: Implementing the Adapter Design Pattern</h5>
-            <div id="modify-message">The Adapter Design Pattern allows integrating an external character or component into an existing system, ...</div>
+	    <h5>Challenge: Prime numbers</h5>
+            <div id="modify-message">In this challenge, your task is to implement a function that identifies prime numbers within a given range ...</div>
 	    <button id="send-response-button" onClick= "guardarResultados()">Send Response</button>
         </div>
     </div>
@@ -138,13 +121,21 @@ console.log(`Target health after Mario's attack: ${target.health}`);
         });
         
         var modal_click_message = `This problem challenges you to continue coding the function to sort an array of positive integers...`;
-        var error_message = `Description:<br><br>
-	The Adapter Design Pattern allows integrating an external character or component into an existing system, making it compatible without 
-        altering its source code. In this challenge, we'll use this pattern to adapt a non-standard character, Mario, into a system that expects a common interface for attack actions.
-	<br><br>
-	Task:
-	<br><br>
-	Create an adapter class, MarioAdapter, that allows a Mario instance to be used like other unit classes (Marine, Zealot, Zergling). The adapter should allow Mario to "attack" by leveraging his jumpAttack method.`;       
+        var error_message = `In this challenge, your task is to implement a function that identifies prime numbers within a given range. A prime number is a natural number greater than 1 that has no positive divisors other than 1 and itself. The function you need to create will take two parameters: start and end, which represent the inclusive range of numbers to be checked.
+<br><br>
+Your function should:
+<br><br>
+- Iterate through each number from start to end.<br>
+- Determine if each number is prime.<br>
+- Collect all prime numbers found within the range into an array.<br>
+- Return the array of prime numbers. If no prime numbers are found, the function should return null.<br><br>
+This challenge requires a good understanding of prime numbers and efficient checking mechanisms, especially for large ranges. It's also important to handle edge cases, such as when the range includes numbers less than or equal to 1, which are not prime.
+<br>
+Example Outputs:
+<br>
+- primes(5, 7) should return [5, 7] because both 5 and 7 are prime.<br>
+- primes(8, 9) should return null because neither 8 nor 9 is a prime number.<br>
+- primes(1, 10) should return [2, 3, 5, 7] as these are the prime numbers between 1 and 10.`;       
 	var success_message = `Congratulations on completing this challenging task! 🎉 You've successfully applied the Adapter Design Pattern, a crucial concept in software design. By adapting Mario's unique abilities into a common interface, 
         you've demonstrated a deep understanding of how to integrate diverse components seamlessly. `
         
@@ -197,55 +188,28 @@ console.log(`Target health after Mario's attack: ${target.health}`);
                     const expect = chai.expect;
 		    const assert = chai.assert;	
 
-describe('MarioAdapter', function() {
-  // Define the classes within the test suite
-  class Marine {
-    attack(target) {
-      target.health -= 6;
-    }
-  }
-  class Zealot {
-    attack(target) {
-      target.health -= 8;
-    }
-  }
-  class Zergling {
-    attack(target) {
-      target.health -= 5;
-    }
-  }
-  class Mario {
-    jumpAttack() {
-      console.log('Mamamia!');
-      return 3;
-    }
-  }
-  shape.MarioAdapter = class {
-    constructor(mario) {
-      this.mario = mario;
-    }
+// Tests for shape.primes
+describe('shape.primes', function() {
+    it('should return [5, 7] for the range 5 to 7', function() {
+        assert.deepEqual(shape.primes(5, 7), [5, 7]);
+    });
 
-    attack(target) {
-      target.health -= this.mario.jumpAttack();
-    }
-  };
-  it('should correctly adapt Mario\'s jumpAttack to the attack interface', function() {
-    const target = { health: 100 };
-    const mario = new Mario();
-    const marioAdapter = new shape.MarioAdapter(mario);
-    marioAdapter.attack(target);
-    assert.equal(target.health, 97);
-  });
-  it('should work with multiple attacks', function() {
-    const target = { health: 100 };
-    const mario = new Mario();
-    const marioAdapter = new shape.MarioAdapter(mario);
-    marioAdapter.attack(target);
-    marioAdapter.attack(target);
-    assert.equal(target.health, 94);
-  });
+    it('should return null for the range 8 to 9', function() {
+        assert.isNull(shape.primes(8, 9));
+    });
+
+    it('should return [2, 3, 5, 7] for the range 1 to 10', function() {
+        assert.deepEqual(shape.primes(1, 10), [2, 3, 5, 7]);
+    });
+
+    it('should return null for the range 4 to 4', function() {
+        assert.isNull(shape.primes(4, 4));
+    });
+
+    it('should return [101, 103, 107, 109, 113] for the range 100 to 115', function() {
+        assert.deepEqual(shape.primes(100, 115), [101, 103, 107, 109, 113]);
+    });
 });
-
 
 		// Variable para rastrear el estado de los tests
                 let allTestsPassed = true;	
