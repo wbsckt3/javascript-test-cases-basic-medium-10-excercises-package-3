@@ -26,53 +26,29 @@
 <body>
     <div id="editor-container">
         <textarea id="code-editor">
-// Base classes
-class Marine {
-  attack(target) {
-    target.health -= 6;
-  }
-}
-class Zealot {
-  attack(target) {
-    target.health -= 8;
-  }
-}
-class Zergling {
-  attack(target) {
-    target.health -= 5;
-  }
-}
-class Mario {
-  jumpAttack() {
-    console.log('Mamamia!');
-    return 3;
-  }
-}
-// Ensure 'shape' is defined
-var shape = shape || {};
-// Wrap MarioAdapter within 'shape'
-shape.MarioAdapter = class {
-  constructor(mario) {
-    this.mario = mario;
+class MarioPowerUpDecorator {
+  constructor(marioAdapter) {
+    this.marioAdapter = marioAdapter;
   }
   attack(target) {
-    target.health -= this.mario.jumpAttack();
+    // Original attack
+    this.marioAdapter.attack(target);
+    // Additional damage from power-up
+    target.health -= 2;
   }
-};
-// Test case
-const target = { health: 100 };
-const mario = new Mario();
-const marioAdapter = new shape.MarioAdapter(mario);
-marioAdapter.attack(target);
-console.log(`Target health after Mario's attack: ${target.health}`);
+}
+// Test cases:
+const poweredUpMarioAdapter = new MarioPowerUpDecorator(marioAdapter);
+poweredUpMarioAdapter.attack(target);
+console.log(`Target health after powered-up Mario's attack: ${target.health}`);
         </textarea>
 		<img id="logo" src="logo_refactorii.png" alt="Logo Refactorii">
         <button id="run-button">Run</button>
     </div>
     <div id="app-container">
         <div id="app">
-	    <h5>Challenge: Implementing the Adapter Design Pattern</h5>
-            <div id="modify-message">The Adapter Design Pattern allows integrating an external character or component into an existing system, ...</div>
+	    <h5>Challenge: Implementing the Decorator Pattern.</h5>
+            <div id="modify-message">This pattern allows for the dynamic extension of an object's behavior without altering its structure. Here's how you can apply it ...</div>
 	    <button id="send-response-button" onClick= "guardarResultados()">Send Response</button>
         </div>
     </div>
@@ -138,13 +114,35 @@ console.log(`Target health after Mario's attack: ${target.health}`);
         });
         
         var modal_click_message = `This problem challenges you to continue coding the function to sort an array of positive integers...`;
-        var error_message = `Description:<br><br>
-	The Adapter Design Pattern allows integrating an external character or component into an existing system, making it compatible without 
-        altering its source code. In this challenge, we'll use this pattern to adapt a non-standard character, Mario, into a system that expects a common interface for attack actions.
-	<br><br>
-	Task:
-	<br><br>
-	Create an adapter class, MarioAdapter, that allows a Mario instance to be used like other unit classes (Marine, Zealot, Zergling). The adapter should allow Mario to "attack" by leveraging his jumpAttack method.`;       
+        var error_message = `Decorator Pattern Concept<br>
+The Decorator Pattern is a structural design pattern that allows behavior to be added to individual objects, either statically or dynamically, without affecting the behavior of other objects from the same class. It provides a flexible alternative to subclassing for extending functionality.
+<br><br>
+In the context of the "MarioAdapter" challenge:
+<br><br>
+MarioAdapter: Adapts Mario's jumpAttack to fit into a consistent attack interface used by other game characters.
+MarioPowerUpDecorator: Dynamically adds additional behavior (a power-up effect) to the existing MarioAdapter. This decorator wraps the MarioAdapter instance and extends its functionality by modifying the attack method to inflict extra damage.
+<br><br>Usage of Decorator Pattern<br><br>
+The Decorator Pattern is beneficial in scenarios where you want to:
+<br>
+- Add responsibilities to individual objects without affecting others.<br>
+- Extend an object's functionality dynamically at runtime.<br>
+- Avoid an explosion of subclasses to represent combinations of behaviors.<br>
+- Understanding the Test<br><br>
+The test case for MarioPowerUpDecorator verifies that the decorator correctly enhances Mario's attack capability. Here's how to interpret the test:
+<br><br>
+Initial Setup:
+<br><br>
+A target object with health initialized to 100.
+A Mario instance and its corresponding MarioAdapter to wrap the Mario object.
+The MarioPowerUpDecorator wraps the MarioAdapter, adding a power-up effect.<br><br>
+Execution:
+<br><br>
+The attack method is called on the poweredUpMarioAdapter, which:
+Calls the attack method of MarioAdapter (which calls Mario's jumpAttack).
+Adds additional damage (2 health points) from the power-up.<br><br>
+Assertion:
+<br><br>
+The test checks that the target's health has decreased correctly. It expects the target's health to be 89, reflecting a total damage of 11 points (9 from jumpAttack + 2 from the power-up).`;       
 	var success_message = `Congratulations on completing this challenging task! 🎉 You've successfully applied the Adapter Design Pattern, a crucial concept in software design. By adapting Mario's unique abilities into a common interface, 
         you've demonstrated a deep understanding of how to integrate diverse components seamlessly. `
         
@@ -197,52 +195,15 @@ console.log(`Target health after Mario's attack: ${target.health}`);
                     const expect = chai.expect;
 		    const assert = chai.assert;	
 
-describe('MarioAdapter', function() {
-  // Define the classes within the test suite
-  class Marine {
-    attack(target) {
-      target.health -= 6;
-    }
-  }
-  class Zealot {
-    attack(target) {
-      target.health -= 8;
-    }
-  }
-  class Zergling {
-    attack(target) {
-      target.health -= 5;
-    }
-  }
-  class Mario {
-    jumpAttack() {
-      console.log('Mamamia!');
-      return 3;
-    }
-  }
-  shape.MarioAdapter = class {
-    constructor(mario) {
-      this.mario = mario;
-    }
+describe('shape.MarioPowerUpDecorator', function() {
+  it('should increase damage dealt by MarioAdapter', function() {
+    const target = { health: 100 };
+    const mario = new Mario();
+    const marioAdapter = new shape.MarioAdapter(mario);
+    const poweredUpMarioAdapter = new shape.MarioPowerUpDecorator(marioAdapter);
 
-    attack(target) {
-      target.health -= this.mario.jumpAttack();
-    }
-  };
-  it('should correctly adapt Mario\'s jumpAttack to the attack interface', function() {
-    const target = { health: 100 };
-    const mario = new Mario();
-    const marioAdapter = new shape.MarioAdapter(mario);
-    marioAdapter.attack(target);
-    assert.equal(target.health, 97);
-  });
-  it('should work with multiple attacks', function() {
-    const target = { health: 100 };
-    const mario = new Mario();
-    const marioAdapter = new shape.MarioAdapter(mario);
-    marioAdapter.attack(target);
-    marioAdapter.attack(target);
-    assert.equal(target.health, 94);
+    poweredUpMarioAdapter.attack(target);
+    assert.equal(target.health, 89, "Expected target's health to decrease by 11 (9 from Mario + 2 from power-up)");
   });
 });
 
