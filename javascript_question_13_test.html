@@ -49,7 +49,7 @@ class Mario {
 }
 // Ensure 'shape' is defined
 var shape = shape || {};
-// Wrap MarioAdapter within 'shape'
+// MarioAdapter to adapt Mario's behavior
 shape.MarioAdapter = class {
   constructor(mario) {
     this.mario = mario;
@@ -58,20 +58,34 @@ shape.MarioAdapter = class {
     target.health -= this.mario.jumpAttack();
   }
 };
-// Test case
+// Composite Adapter to handle multiple units
+shape.CompositeAdapter = class {
+  constructor(units) {
+    this.units = units;
+  }
+  attack(target) {
+    this.units.forEach(unit => unit.attack(target));
+  }
+};
+// Test cases:
 const target = { health: 100 };
 const mario = new Mario();
 const marioAdapter = new shape.MarioAdapter(mario);
-marioAdapter.attack(target);
-console.log(`Target health after Mario's attack: ${target.health}`);
+const marine = new Marine();
+const zealot = new Zealot();
+const zergling = new Zergling();
+// Creating a composite adapter with multiple units
+const compositeAdapter = new shape.CompositeAdapter([marioAdapter, marine, zealot, zergling]);
+compositeAdapter.attack(target);
+console.log(`Target health after composite attack: ${target.health}`);
         </textarea>
-		<img id="logo" src="logo_refactorii.png" alt="Logo Refactorii">
+	<img id="logo" src="logo_refactorii.png" alt="Logo Refactorii">
         <button id="run-button">Run</button>
     </div>
     <div id="app-container">
         <div id="app">
-	    <h5>Challenge: Implementing the Adapter Design Pattern</h5>
-            <div id="modify-message">The Adapter Design Pattern allows integrating an external character or component into an existing system, ...</div>
+	    <h5>Challenge: Composite Adapter Implementation</h5>
+            <div id="modify-message">This concept allows the adapter to handle not only a single adapted object (like Mario) but also a group of adapted objects ...</div>
 	    <button id="send-response-button" onClick= "guardarResultados()">Send Response</button>
         </div>
     </div>
@@ -137,15 +151,20 @@ console.log(`Target health after Mario's attack: ${target.health}`);
         });
         
         var modal_click_message = `This problem challenges you to continue coding the function to sort an array of positive integers...`;
-        var error_message = `Description:<br><br>
-	The Adapter Design Pattern allows integrating an external character or component into an existing system, making it compatible without 
-        altering its source code. In this challenge, we'll use this pattern to adapt a non-standard character, Mario, into a system that expects a common interface for attack actions.
-	<br><br>
-	Task:
-	<br><br>
-	Create an adapter class, MarioAdapter, that allows a Mario instance to be used like other unit classes (Marine, Zealot, Zergling). The adapter should allow Mario to "attack" by leveraging his jumpAttack method.`;       
-	var success_message = `Congratulations on completing this challenging task! 🎉 You've successfully applied the Adapter Design Pattern, a crucial concept in software design. By adapting Mario's unique abilities into a common interface, 
-        you've demonstrated a deep understanding of how to integrate diverse components seamlessly. `
+        var error_message = `Composite Adapter.<br><br> This concept allows the adapter to handle not only a single adapted object (like Mario) but also a group of adapted objects. 
+	This can simulate a scenario where we have a squad of units, including both native units(Marine, Zealot, Zergling) and adapted units (like Mario), that can attack together.
+ Test cases Explanation:<br><br>
+Setting Up Tests: The tests set up a target object with an initial health of 100 to verify the attack results.
+<br><br>
+Multiple Units Attack: The first test ensures that the CompositeAdapter correctly handles attacks from multiple units, including adapted units (MarioAdapter) and native units (Marine, Zealot, Zergling).
+<br><br>
+Adapting Mario's Behavior: The second test checks that the MarioAdapter adapts Mario's jumpAttack method correctly, modifying the target's health as expected.
+<br><br>
+Mix of Units: The third test confirms that the CompositeAdapter can handle a mix of native and adapted units and that all units contribute to the total attack damage on the target.
+<br><br>
+These tests help ensure that the adapter pattern implementation and its extension through a composite structure work correctly, handling various scenarios of unit interactions.`;       
+	var success_message = `
+🎉 Great job on mastering the Composite Adapter Pattern! 🚀 Your work shows impressive skill in advanced software architecture. Keep pushing forward and exploring new challenges—you're on an amazing path! 🌟`
         
         // Función para mostrar el modal con el mensaje de error
         document.getElementById('modify-message').addEventListener('click', function() {
@@ -196,55 +215,73 @@ console.log(`Target health after Mario's attack: ${target.health}`);
                     const expect = chai.expect;
 		    const assert = chai.assert;	
 
-describe('MarioAdapter', function() {
-  // Define the classes within the test suite
-  class Marine {
-    attack(target) {
-      target.health -= 6;
-    }
-  }
-  class Zealot {
-    attack(target) {
-      target.health -= 8;
-    }
-  }
-  class Zergling {
-    attack(target) {
-      target.health -= 5;
-    }
-  }
-  class Mario {
-    jumpAttack() {
-      console.log('Mamamia!');
-      return 3;
-    }
-  }
-  shape.MarioAdapter = class {
-    constructor(mario) {
-      this.mario = mario;
-    }
+// Test suite for Composite Adapter
+describe('shape.CompositeAdapter', function() {
 
-    attack(target) {
-      target.health -= this.mario.jumpAttack();
-    }
-  };
+  // Test to check if the composite adapter correctly handles multiple attacks
+  it('should correctly handle attacks from multiple units', function() {
+    // Set up the target with initial health
+    const target = { health: 100 };
+
+    // Create instances of native units
+    const marine = new Marine();
+    const zealot = new Zealot();
+    const zergling = new Zergling();
+
+    // Create an adapted unit for Mario
+    const mario = new Mario();
+    const marioAdapter = new shape.MarioAdapter(mario);
+
+    // Create a composite adapter with all units
+    const compositeAdapter = new shape.CompositeAdapter([marioAdapter, marine, zealot, zergling]);
+
+    // Perform the attack
+    compositeAdapter.attack(target);
+
+    // Check the target's health after the attack
+    expect(target.health).to.equal(100 - (3 + 6 + 8 + 5));
+  });
+
+  // Additional test to ensure MarioAdapter is correctly adapting Mario's behavior
   it('should correctly adapt Mario\'s jumpAttack to the attack interface', function() {
+    // Set up the target with initial health
     const target = { health: 100 };
-    const mario = new Mario();
-    const marioAdapter = new shape.MarioAdapter(mario);
-    marioAdapter.attack(target);
-    assert.equal(target.health, 97);
-  });
-  it('should work with multiple attacks', function() {
-    const target = { health: 100 };
-    const mario = new Mario();
-    const marioAdapter = new shape.MarioAdapter(mario);
-    marioAdapter.attack(target);
-    marioAdapter.attack(target);
-    assert.equal(target.health, 94);
-  });
-});
 
+    // Create an adapted unit for Mario
+    const mario = new Mario();
+    const marioAdapter = new shape.MarioAdapter(mario);
+
+    // Perform the attack
+    marioAdapter.attack(target);
+
+    // Check the target's health after Mario's attack
+    expect(target.health).to.equal(100 - 3);
+  });
+
+  // Test to ensure that composite attack correctly applies all attacks
+  it('should work with a mix of native and adapted units', function() {
+    // Set up the target with initial health
+    const target = { health: 100 };
+
+    // Create instances of native units
+    const marine = new Marine();
+    const zealot = new Zealot();
+
+    // Create an adapted unit for Mario
+    const mario = new Mario();
+    const marioAdapter = new shape.MarioAdapter(mario);
+
+    // Create a composite adapter with a mix of units
+    const compositeAdapter = new shape.CompositeAdapter([marioAdapter, marine, zealot]);
+
+    // Perform the attack
+    compositeAdapter.attack(target);
+
+    // Check the target's health after the attack
+    expect(target.health).to.equal(100 - (3 + 6 + 8));
+  });
+
+});
 
 		// Variable para rastrear el estado de los tests
                 let allTestsPassed = true;	
