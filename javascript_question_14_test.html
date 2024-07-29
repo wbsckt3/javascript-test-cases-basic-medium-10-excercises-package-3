@@ -26,21 +26,56 @@
 <body>
     <div id="editor-container">
         <textarea id="code-editor">
-class MarioPowerUpDecorator {
+// Base Classes
+class Marine {
+  attack(target) {
+    target.health -= 6;
+  }
+}
+class Zealot {
+  attack(target) {
+    target.health -= 8;
+  }
+}
+class Zergling {
+  attack(target) {
+    target.health -= 5;
+  }
+}
+class Mario {
+  jumpAttack() {
+    console.log('Mamamia!');
+    return 3;
+  }
+}
+// Ensure shape is defined
+var shape = shape || {};
+// Wrap MarioAdapter inside shape
+shape.MarioAdapter = class {
+  constructor(mario) {
+    this.mario = mario;
+  }
+  attack(target) {
+    target.health -= this.mario.jumpAttack();
+  }
+};
+// Decorator to add power-up effect
+shape.MarioPowerUpDecorator = class {
   constructor(marioAdapter) {
     this.marioAdapter = marioAdapter;
   }
   attack(target) {
-    // Original attack
     this.marioAdapter.attack(target);
-    // Additional damage from power-up
-    target.health -= 2;
+    target.health -= 2; // Additional damage from power-up
   }
-}
-// Test cases:
-const poweredUpMarioAdapter = new MarioPowerUpDecorator(marioAdapter);
+};
+// Example usage:
+const target = { health: 100 };
+const mario = new Mario();
+const marioAdapter = new shape.MarioAdapter(mario);
+const poweredUpMarioAdapter = new shape.MarioPowerUpDecorator(marioAdapter);
 poweredUpMarioAdapter.attack(target);
-console.log(`Target health after powered-up Mario's attack: ${target.health}`);
+console.log(`Target health after Mario's attack with power-up: ${target.health}`);
         </textarea>
 		<img id="logo" src="logo_refactorii.png" alt="Logo Refactorii">
         <button id="run-button">Run</button>
