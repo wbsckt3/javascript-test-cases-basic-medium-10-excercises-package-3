@@ -25,7 +25,7 @@
 <body>
     <div id="editor-container">
         <textarea id="code-editor">
-// Clases base
+// Base classes
 class Marine {
   attack(target) {
     target.health -= 6;
@@ -47,9 +47,9 @@ class Mario {
     return 3;
   }
 }
-// Aseguramos que shape esté definido
+// Ensure 'shape' is defined
 var shape = shape || {};
-// Envolvemos MarioAdapter dentro de shape
+// Wrap MarioAdapter within 'shape'
 shape.MarioAdapter = class {
   constructor(mario) {
     this.mario = mario;
@@ -58,7 +58,7 @@ shape.MarioAdapter = class {
     target.health -= this.mario.jumpAttack();
   }
 };
-// Ejemplo de uso:
+// Test case
 const target = { health: 100 };
 const mario = new Mario();
 const marioAdapter = new shape.MarioAdapter(mario);
