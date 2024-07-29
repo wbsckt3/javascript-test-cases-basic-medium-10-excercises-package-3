@@ -50,7 +50,7 @@ class Mario {
 }
 // Ensure shape is defined
 var shape = shape || {};
-// Wrap MarioAdapter inside shape
+// MarioAdapter: Adapts Mario's attack
 shape.MarioAdapter = class {
   constructor(mario) {
     this.mario = mario;
@@ -59,14 +59,14 @@ shape.MarioAdapter = class {
     target.health -= this.mario.jumpAttack();
   }
 };
-// Decorator to add power-up effect
+// MarioPowerUpDecorator: Adds additional power-up damage
 shape.MarioPowerUpDecorator = class {
   constructor(marioAdapter) {
     this.marioAdapter = marioAdapter;
   }
   attack(target) {
     this.marioAdapter.attack(target);
-    target.health -= 2; // Additional damage from power-up
+    target.health -= 8; // Increased power-up effect
   }
 };
 // Example usage:
