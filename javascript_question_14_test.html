@@ -196,6 +196,30 @@ The test checks that the target's health has decreased correctly. It expects the
 		    const assert = chai.assert;	
 
 describe('shape.MarioPowerUpDecorator', function() {
+
+   // Define the classes within the test suite
+  class Marine {
+    attack(target) {
+      target.health -= 6;
+    }
+  }
+  class Zealot {
+    attack(target) {
+      target.health -= 8;
+    }
+  }
+  class Zergling {
+    attack(target) {
+      target.health -= 5;
+    }
+  }
+  class Mario {
+    jumpAttack() {
+      console.log('Mamamia!');
+      return 3;
+    }
+  }
+	
   it('should increase damage dealt by MarioAdapter', function() {
     const target = { health: 100 };
     const mario = new Mario();
