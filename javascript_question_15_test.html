@@ -168,13 +168,27 @@ console.log(`Target health after Mario's ultimate attack: ${target.health}`);
         });
         
         var modal_click_message = `This problem challenges you to continue coding the function to sort an array of positive integers...`;
-        var error_message = `Description:<br><br>
-	The Adapter Design Pattern allows integrating an external character or component into an existing system, making it compatible without 
-        altering its source code. In this challenge, we'll use this pattern to adapt a non-standard character, Mario, into a system that expects a common interface for attack actions.
-	<br><br>
-	Task:
-	<br><br>
-	Create an adapter class, MarioAdapter, that allows a Mario instance to be used like other unit classes (Marine, Zealot, Zergling). The adapter should allow Mario to "attack" by leveraging his jumpAttack method.`;       
+        var error_message = `Strategy Pattern: <br><br>
+	The Strategy Pattern allows an object (in this case, Mario) to change its behavior at runtime by switching between different algorithms or strategies. Here, Mario can perform different types of attacks by using different attack strategies like StandardAttack, PowerUpAttack, and UltimateAttack.
+<br><br>
+Adaptation: The MarioAdapter acts as an intermediary that ensures Mario's various attack strategies can be used consistently in a system designed for different units (like Marines, Zealots, etc.).
+<br>
+Test Cases Explanation<br><br>
+Standard Attack Strategy Test:
+<br><br>
+Setup: We assign Mario the StandardAttack strategy, which inflicts a fixed damage of 3 health points on the target.<br>
+Execution: Mario attacks the target using the MarioAdapter.<br>
+Assertion: The test checks if the target's health decreases by 3, confirming that the standard attack was applied correctly.<br><br>
+PowerUp Attack Strategy Test:<br><br>
+Setup: This time, we switch Mario's strategy to PowerUpAttack, which inflicts a higher damage of 6 health points.<br>
+Execution: The attack is executed through the MarioAdapter.<br>
+Assertion: The test ensures that the target's health decreases by 6, verifying the correct application of the power-up attack.<br>
+<br>Ultimate Attack Strategy Test:
+<br><br>
+Setup: Finally, Mario is assigned the UltimateAttack strategy, which is the most powerful, causing a damage of 10 health points.<br>
+Execution: Using the MarioAdapter, Mario performs the ultimate attack.<br>
+Assertion: The target's health is checked to confirm a reduction by 10 points, validating the functionality of the ultimate attack.<br><br>
+Each test case demonstrates how the MarioAdapter can adapt Mario's attack based on the current strategy, ensuring that the system can handle various behaviors seamlessly. This pattern allows for flexible and scalable design, accommodating new strategies or changes in existing ones with minimal impact on the rest of the system.`;       
 	var success_message = `Congratulations on completing this challenging task! 🎉 You've successfully applied the Adapter Design Pattern, a crucial concept in software design. By adapting Mario's unique abilities into a common interface, 
         you've demonstrated a deep understanding of how to integrate diverse components seamlessly. `
         
@@ -229,28 +243,51 @@ console.log(`Target health after Mario's ultimate attack: ${target.health}`);
 
 describe('MarioAdapter with Strategy Pattern', function() {
 
-  // Define the classes within the test suite
   class Marine {
-    attack(target) {
-      target.health -= 6;
-    }
+  attack(target) {
+    target.health -= 6;
   }
-  class Zealot {
-    attack(target) {
-      target.health -= 8;
-    }
+}
+class Zealot {
+  attack(target) {
+    target.health -= 8;
   }
-  class Zergling {
-    attack(target) {
-      target.health -= 5;
-    }
+}
+class Zergling {
+  attack(target) {
+    target.health -= 5;
   }
-  class Mario {
-    jumpAttack() {
-      console.log('Mamamia!');
-      return 3;
-    }
+}
+// Mario and Attack Strategies
+class Mario {
+  constructor() {
+    this.attackStrategy = new StandardAttack();
   }
+  setAttackStrategy(strategy) {
+    this.attackStrategy = strategy;
+  }
+  attack(target) {
+    target.health -= this.attackStrategy.execute();
+  }
+}
+class StandardAttack {
+  execute() {
+    console.log('Mamamia!');
+    return 3;
+  }
+}
+class PowerUpAttack {
+  execute() {
+    console.log('Super Mamamia!');
+    return 6;
+  }
+}
+class UltimateAttack {
+  execute() {
+    console.log('Ultimate Mamamia!');
+    return 10;
+  }
+}
 	
 	
   it('should correctly apply the StandardAttack strategy', function() {
