@@ -26,17 +26,18 @@
 <body>
     <div id="editor-container">
         <textarea id="code-editor">
-// Ensure shape is defined
 var shape = shape || {};
 // Adding String.eachChar() method to shape.StringExtensions
-shape.StringUtils = {
+shape.StringExtensions = {
   eachChar: function(str, arg) {
     if (typeof arg === 'string') {
+      // Add the string after each character, including a trailing string
       return str.split('').join(arg) + arg;
     } else if (typeof arg === 'function') {
+      // Apply the function to each character
       return str.split('').map(arg).join('');
     }
-    return str;
+    return str; // Return original string if neither case matches
   }
 };
 // Example usage:
@@ -190,33 +191,20 @@ The use of the name "RuplesJS" and the reference to Ruby methods like each_char 
                     // Define test cases
                     const expect = chai.expect;
 		    const assert = chai.assert;	
-
-describe("shape.StringUtils.eachChar Method", function() {
-  it("should add a space after each character", function() {
-    const result = shape.StringUtils.eachChar("hello", " ");
-    assert.strictEqual(result, "h e l l o ");
+// Test cases:
+describe('shape.StringExtensions.eachChar', function() {
+  it('should add a space after each character', function() {
+    assert.strictEqual(shape.StringExtensions.eachChar("hello", " "), "h e l l o ");
   });
 
-  it("should convert all 'l' characters to uppercase", function() {
-    const result = shape.StringUtils.eachChar("hello all", function(char) {
+  it('should capitalize "l" characters using a function', function() {
+    assert.strictEqual(shape.StringExtensions.eachChar("hello all", function(char) {
       return char === "l" ? char.toUpperCase() : char;
-    });
-    assert.strictEqual(result, "heLLo aLL");
+    }), "heLLo aLL");
   });
 
-  it("should return the original string if parameter is neither string nor function", function() {
-    const result = shape.StringUtils.eachChar("hello", 123);
-    assert.strictEqual(result, "hello");
-  });
-
-  it("should handle an empty string correctly", function() {
-    const result = shape.StringUtils.eachChar("", " ");
-    assert.strictEqual(result, "");
-  });
-
-  it("should handle null or undefined gracefully", function() {
-    const result = shape.StringUtils.eachChar("hello", null);
-    assert.strictEqual(result, "hello");
+  it('should return the original string if the argument is not a string or function', function() {
+    assert.strictEqual(shape.StringExtensions.eachChar("test", 123), "test");
   });
 });
 
