@@ -26,53 +26,55 @@
 <body>
     <div id="editor-container">
         <textarea id="code-editor">
-// Base classes
-class Marine {
-  attack(target) {
-    target.health -= 6;
-  }
-}
-class Zealot {
-  attack(target) {
-    target.health -= 8;
-  }
-}
-class Zergling {
-  attack(target) {
-    target.health -= 5;
-  }
-}
-class Mario {
-  jumpAttack() {
-    console.log('Mamamia!');
-    return 3;
-  }
-}
-// Ensure 'shape' is defined
+// Encapsulating the function in shape namespace
 var shape = shape || {};
-// Wrap MarioAdapter within 'shape'
-shape.MarioAdapter = class {
-  constructor(mario) {
-    this.mario = mario;
-  }
-  attack(target) {
-    target.health -= this.mario.jumpAttack();
+
+shape.StringUtils = {
+  isValidInternationalPhoneNumber: function(phoneNumber) {
+    // Define the regular expression pattern for a valid international phone number
+    const regexPattern = /^\+\d{1,3}[-\s]?\(?\d{1,4}\)?[-\s]?\d{1,4}[-\s]?\d{1,4}[-\s]?\d{1,4}$/;
+
+    // Remove any non-digit characters except for '+' at the start
+    const normalizedNumber = phoneNumber.replace(/(?!^\+)[^\d]/g, '');
+
+    // Check if the normalized number matches the regex pattern and its length is within valid range
+    return regexPattern.test(phoneNumber) && normalizedNumber.length >= 8 && normalizedNumber.length <= 18;
   }
 };
-// Test case
-const target = { health: 100 };
-const mario = new Mario();
-const marioAdapter = new shape.MarioAdapter(mario);
-marioAdapter.attack(target);
-console.log(`Target health after Mario's attack: ${target.health}`);
+
+// Console logs for testing the function
+console.log("Test: +1 234 567 890 should be valid");
+console.log(shape.StringUtils.isValidInternationalPhoneNumber("+1 234 567 890")); // Expected: true
+
+console.log("Test: +44 20 1234 5678 should be valid");
+console.log(shape.StringUtils.isValidInternationalPhoneNumber("+44 20 1234 5678")); // Expected: true
+
+console.log("Test: +1-(123)-456-7890 should be valid");
+console.log(shape.StringUtils.isValidInternationalPhoneNumber("+1-(123)-456-7890")); // Expected: true
+
+console.log("Test: +123 456 should be invalid");
+console.log(shape.StringUtils.isValidInternationalPhoneNumber("+123 456")); // Expected: false
+
+console.log("Test: +12 345 678 901 234 should be valid");
+console.log(shape.StringUtils.isValidInternationalPhoneNumber("+12 345 678 901 234")); // Expected: true
+
+console.log("Test: Missing country code should be invalid");
+console.log(shape.StringUtils.isValidInternationalPhoneNumber("123-456-7890")); // Expected: false
+
+console.log("Test: Too many digits in local number should be invalid");
+console.log(shape.StringUtils.isValidInternationalPhoneNumber("+1 234 567 890 1234 5678")); // Expected: false
+
+console.log("Test: Random string should be invalid");
+console.log(shape.StringUtils.isValidInternationalPhoneNumber("hello world!")); // Expected: false
+
         </textarea>
 	<img id="logo" src="https://wbsckt3.github.io/javascript-test-cases-basic-medium-10-excercises-package/logo_refactorii.png" alt="Logo Refactorii">
         <button id="run-button">Run</button>
     </div>
     <div id="app-container">
         <div id="app">
-	    <h5>Challenge: Implementing the Adapter Design Pattern</h5>
-            <div id="modify-message">The Adapter Design Pattern allows integrating an external character or component into an existing system, ...</div>
+	    <h5>Challenge: String Manipulation and Regular Expressions</h5>
+            <div id="modify-message">In programming, especially when working with strings, regular expressions (regex) are a powerful tool for searching, matching, and manipulating text...</div>
 	    <button id="send-response-button" onClick= "guardarResultados()">Send Response</button>
         </div>
     </div>
@@ -138,15 +140,33 @@ console.log(`Target health after Mario's attack: ${target.health}`);
         });
         
         var modal_click_message = `This problem challenges you to continue coding the function to sort an array of positive integers...`;
-        var error_message = `Description:<br><br>
-	The Adapter Design Pattern allows integrating an external character or component into an existing system, making it compatible without 
-        altering its source code. In this challenge, we'll use this pattern to adapt a non-standard character, Mario, into a system that expects a common interface for attack actions.
-	<br><br>
-	Task:
-	<br><br>
-	Create an adapter class, MarioAdapter, that allows a Mario instance to be used like other unit classes (Marine, Zealot, Zergling). The adapter should allow Mario to "attack" by leveraging his jumpAttack method.`;       
-	var success_message = `Congratulations on completing this challenging task! 🎉 You've successfully applied the Adapter Design Pattern, a crucial concept in software design. By adapting Mario's unique abilities into a common interface, 
-        you've demonstrated a deep understanding of how to integrate diverse components seamlessly. `
+        var error_message = ` String Manipulation and Regular Expressions<br><br>
+In programming, especially when working with strings, regular expressions (regex) are a powerful tool for searching, matching, and manipulating text. This challenge aims to test your understanding of regex patterns, string methods, and conditional logic in JavaScript.
+<br><br>
+Task: Validate International Phone Numbers<br><br>
+Your task is to implement a function that validates international phone numbers. The function should check if a given string is a valid phone number according to the following criteria:
+<br><br>
+- The number must start with a + followed by the country code and then the local number.<br>
+- The country code can have 1 to 3 digits.<br>
+- The local number must be 7 to 15 digits long.<br>
+- The number can contain spaces, dashes, or parentheses, but these should be ignored when checking the validity.<br><br>
+Examples of valid numbers:
+<br><br>
+- +1 234 567 890<br>
+- +44 20 1234 5678<br>
+- +1-(123)-456-7890<br><br>Test Cases:<br><br>
++1 234 567 890 should be valid<br>
++44 20 1234 5678 should be valid<br>
++1-(123)-456-7890 should be valid<br>
++123 456 should be invalid (too short)<br>
++12 345 678 901 234 should be valid<br>
+123-456-7890 should be invalid (missing country code)<br>
++1 234 567 890 1234 5678 should be invalid (too long)<br>
+"hello world!" should be invalid (not a number)<br>`;
+
+	var success_message = `🚀 Well done! You've successfully navigated through the complexities of regular expressions and phone number validation. 
+ This exercise wasn't just about finding the right pattern; it was about sharpening your skills and deepening your understanding of string manipulation and 
+ pattern recognition. Keep pushing those boundaries and exploring the vast possibilities of programming. You're on a path to becoming a master of code! 🌟👏👨‍💻👩‍💻 `
         
         // Función para mostrar el modal con el mensaje de error
         document.getElementById('modify-message').addEventListener('click', function() {
@@ -197,55 +217,47 @@ console.log(`Target health after Mario's attack: ${target.health}`);
                     const expect = chai.expect;
 		    const assert = chai.assert;	
 
-describe('MarioAdapter', function() {
-  // Define the classes within the test suite
-  class Marine {
-    attack(target) {
-      target.health -= 6;
-    }
-  }
-  class Zealot {
-    attack(target) {
-      target.health -= 8;
-    }
-  }
-  class Zergling {
-    attack(target) {
-      target.health -= 5;
-    }
-  }
-  class Mario {
-    jumpAttack() {
-      console.log('Mamamia!');
-      return 3;
-    }
-  }
-  shape.MarioAdapter = class {
-    constructor(mario) {
-      this.mario = mario;
-    }
-
-    attack(target) {
-      target.health -= this.mario.jumpAttack();
-    }
-  };
-  it('should correctly adapt Mario\'s jumpAttack to the attack interface', function() {
-    const target = { health: 100 };
-    const mario = new Mario();
-    const marioAdapter = new shape.MarioAdapter(mario);
-    marioAdapter.attack(target);
-    assert.equal(target.health, 97);
+describe("shape.StringUtils.isValidInternationalPhoneNumber Method", function() {
+  it("should validate the phone number +1 234 567 890", function() {
+    const result = shape.StringUtils.isValidInternationalPhoneNumber("+1 234 567 890");
+    assert.strictEqual(result, true);
   });
-  it('should work with multiple attacks', function() {
-    const target = { health: 100 };
-    const mario = new Mario();
-    const marioAdapter = new shape.MarioAdapter(mario);
-    marioAdapter.attack(target);
-    marioAdapter.attack(target);
-    assert.equal(target.health, 94);
+
+  it("should validate the phone number +44 20 1234 5678", function() {
+    const result = shape.StringUtils.isValidInternationalPhoneNumber("+44 20 1234 5678");
+    assert.strictEqual(result, true);
+  });
+
+  it("should validate the phone number +1-(123)-456-7890", function() {
+    const result = shape.StringUtils.isValidInternationalPhoneNumber("+1-(123)-456-7890");
+    assert.strictEqual(result, true);
+  });
+
+  it("should invalidate the phone number +123 456 (too short)", function() {
+    const result = shape.StringUtils.isValidInternationalPhoneNumber("+123 456");
+    assert.strictEqual(result, false);
+  });
+
+  it("should validate the phone number +12 345 678 901 234", function() {
+    const result = shape.StringUtils.isValidInternationalPhoneNumber("+12 345 678 901 234");
+    assert.strictEqual(result, true);
+  });
+
+  it("should invalidate the phone number 123-456-7890 (missing country code)", function() {
+    const result = shape.StringUtils.isValidInternationalPhoneNumber("123-456-7890");
+    assert.strictEqual(result, false);
+  });
+
+  it("should invalidate the phone number +1 234 567 890 1234 5678 (too long)", function() {
+    const result = shape.StringUtils.isValidInternationalPhoneNumber("+1 234 567 890 1234 5678");
+    assert.strictEqual(result, false);
+  });
+
+  it("should invalidate the input 'hello world!' (not a number)", function() {
+    const result = shape.StringUtils.isValidInternationalPhoneNumber("hello world!");
+    assert.strictEqual(result, false);
   });
 });
-
 
 		// Variable para rastrear el estado de los tests
                 let allTestsPassed = true;	
