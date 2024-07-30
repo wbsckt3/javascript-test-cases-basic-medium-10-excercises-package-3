@@ -26,8 +26,8 @@
 <body>
     <div id="editor-container">
         <textarea id="code-editor">
-// Encapsulating the function in shape namespace
-shape = shape || {};
+// Ensure the shape namespace is defined
+var shape = shape || {};
 
 shape.StringUtils = {
   signedEightBitNumber: function(str) {
@@ -86,6 +86,7 @@ console.log(shape.StringUtils.signedEightBitNumber("abc")); // Expected: false
 
 console.log("Test: String with non-digit characters should be invalid");
 console.log(shape.StringUtils.signedEightBitNumber("12a")); // Expected: false
+
         </textarea>
 	<img id="logo" src="https://wbsckt3.github.io/javascript-test-cases-basic-medium-10-excercises-package/logo_refactorii.png" alt="Logo Refactorii">
         <button id="run-button">Run</button>
