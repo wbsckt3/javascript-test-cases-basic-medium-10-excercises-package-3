@@ -26,53 +26,74 @@
 <body>
     <div id="editor-container">
         <textarea id="code-editor">
-// Base classes
-class Marine {
-  attack(target) {
-    target.health -= 6;
-  }
-}
-class Zealot {
-  attack(target) {
-    target.health -= 8;
-  }
-}
-class Zergling {
-  attack(target) {
-    target.health -= 5;
-  }
-}
-class Mario {
-  jumpAttack() {
-    console.log('Mamamia!');
-    return 3;
-  }
-}
-// Ensure 'shape' is defined
-var shape = shape || {};
-// Wrap MarioAdapter within 'shape'
-shape.MarioAdapter = class {
-  constructor(mario) {
-    this.mario = mario;
-  }
-  attack(target) {
-    target.health -= this.mario.jumpAttack();
+// Encapsulating the function in shape namespace
+shape = shape || {};
+
+shape.StringUtils = {
+  signedEightBitNumber: function(str) {
+    // Check if the string represents an integer
+    if (!/^-?\d+$/.test(str)) {
+      return false;
+    }
+    
+    // Convert string to a number
+    const num = Number(str);
+    
+    // Check if the number is within the 8-bit signed integer range
+    return num >= -128 && num <= 127;
   }
 };
-// Test case
-const target = { health: 100 };
-const mario = new Mario();
-const marioAdapter = new shape.MarioAdapter(mario);
-marioAdapter.attack(target);
-console.log(`Target health after Mario's attack: ${target.health}`);
+
+// Console logs for testing the function
+console.log("Test: -128 should be valid");
+console.log(shape.StringUtils.signedEightBitNumber("-128")); // Expected: true
+
+console.log("Test: 127 should be valid");
+console.log(shape.StringUtils.signedEightBitNumber("127")); // Expected: true
+
+console.log("Test: 0 should be valid");
+console.log(shape.StringUtils.signedEightBitNumber("0")); // Expected: true
+
+console.log("Test: -1 should be valid");
+console.log(shape.StringUtils.signedEightBitNumber("-1")); // Expected: true
+
+console.log("Test: 56 should be valid");
+console.log(shape.StringUtils.signedEightBitNumber("56")); // Expected: true
+
+console.log("Test: -129 is out of range");
+console.log(shape.StringUtils.signedEightBitNumber("-129")); // Expected: false
+
+console.log("Test: 128 is out of range");
+console.log(shape.StringUtils.signedEightBitNumber("128")); // Expected: false
+
+console.log("Test: 999 is out of range");
+console.log(shape.StringUtils.signedEightBitNumber("999")); // Expected: false
+
+console.log("Test: Leading space should invalidate");
+console.log(shape.StringUtils.signedEightBitNumber(" 123")); // Expected: false
+
+console.log("Test: Leading + should invalidate");
+console.log(shape.StringUtils.signedEightBitNumber("+123")); // Expected: false
+
+console.log("Test: Leading 0 should invalidate");
+console.log(shape.StringUtils.signedEightBitNumber("0123")); // Expected: false
+
+console.log("Test: Decimal point should invalidate");
+console.log(shape.StringUtils.signedEightBitNumber("1.23")); // Expected: false
+
+console.log("Test: Non-numeric string should be invalid");
+console.log(shape.StringUtils.signedEightBitNumber("abc")); // Expected: false
+
+console.log("Test: String with non-digit characters should be invalid");
+console.log(shape.StringUtils.signedEightBitNumber("12a")); // Expected: false
         </textarea>
 	<img id="logo" src="https://wbsckt3.github.io/javascript-test-cases-basic-medium-10-excercises-package/logo_refactorii.png" alt="Logo Refactorii">
         <button id="run-button">Run</button>
     </div>
     <div id="app-container">
         <div id="app">
-	    <h5>Challenge: Implementing the Adapter Design Pattern</h5>
-            <div id="modify-message">The Adapter Design Pattern allows integrating an external character or component into an existing system, ...</div>
+	    <h5>Challenge: 8-Bit Signed Number Validation</h5>
+            <div id="modify-message">The concept involves checking if a given number is representable as an 8-bit signed integer. An 8-bit signed integer can store numbers from -128 to 127 ...</div>
 	    <button id="send-response-button" onClick= "guardarResultados()">Send Response</button>
         </div>
     </div>
@@ -197,52 +218,55 @@ console.log(`Target health after Mario's attack: ${target.health}`);
                     const expect = chai.expect;
 		    const assert = chai.assert;	
 
-describe('MarioAdapter', function() {
-  // Define the classes within the test suite
-  class Marine {
-    attack(target) {
-      target.health -= 6;
-    }
-  }
-  class Zealot {
-    attack(target) {
-      target.health -= 8;
-    }
-  }
-  class Zergling {
-    attack(target) {
-      target.health -= 5;
-    }
-  }
-  class Mario {
-    jumpAttack() {
-      console.log('Mamamia!');
-      return 3;
-    }
-  }
-  shape.MarioAdapter = class {
-    constructor(mario) {
-      this.mario = mario;
-    }
-
-    attack(target) {
-      target.health -= this.mario.jumpAttack();
-    }
-  };
-  it('should correctly adapt Mario\'s jumpAttack to the attack interface', function() {
-    const target = { health: 100 };
-    const mario = new Mario();
-    const marioAdapter = new shape.MarioAdapter(mario);
-    marioAdapter.attack(target);
-    assert.equal(target.health, 97);
+describe("shape.StringUtils.signedEightBitNumber", function() {
+  it("should return true for valid 8-bit signed integers", function() {
+    console.log("Test: -128 should be valid");
+    console.log(shape.StringUtils.signedEightBitNumber("-128")); // Expected: true
+    
+    console.log("Test: 127 should be valid");
+    console.log(shape.StringUtils.signedEightBitNumber("127")); // Expected: true
+    
+    console.log("Test: 0 should be valid");
+    console.log(shape.StringUtils.signedEightBitNumber("0")); // Expected: true
+    
+    console.log("Test: -1 should be valid");
+    console.log(shape.StringUtils.signedEightBitNumber("-1")); // Expected: true
+    
+    console.log("Test: 56 should be valid");
+    console.log(shape.StringUtils.signedEightBitNumber("56")); // Expected: true
   });
-  it('should work with multiple attacks', function() {
-    const target = { health: 100 };
-    const mario = new Mario();
-    const marioAdapter = new shape.MarioAdapter(mario);
-    marioAdapter.attack(target);
-    marioAdapter.attack(target);
-    assert.equal(target.health, 94);
+
+  it("should return false for numbers outside the 8-bit signed range", function() {
+    console.log("Test: -129 is out of range");
+    console.log(shape.StringUtils.signedEightBitNumber("-129")); // Expected: false
+    
+    console.log("Test: 128 is out of range");
+    console.log(shape.StringUtils.signedEightBitNumber("128")); // Expected: false
+    
+    console.log("Test: 999 is out of range");
+    console.log(shape.StringUtils.signedEightBitNumber("999")); // Expected: false
+  });
+
+  it("should return false for non-canonical representations", function() {
+    console.log("Test: Leading space should invalidate");
+    console.log(shape.StringUtils.signedEightBitNumber(" 123")); // Expected: false
+    
+    console.log("Test: Leading + should invalidate");
+    console.log(shape.StringUtils.signedEightBitNumber("+123")); // Expected: false
+    
+    console.log("Test: Leading 0 should invalidate");
+    console.log(shape.StringUtils.signedEightBitNumber("0123")); // Expected: false
+    
+    console.log("Test: Decimal point should invalidate");
+    console.log(shape.StringUtils.signedEightBitNumber("1.23")); // Expected: false
+  });
+
+  it("should return false for non-numeric strings", function() {
+    console.log("Test: Non-numeric string should be invalid");
+    console.log(shape.StringUtils.signedEightBitNumber("abc")); // Expected: false
+    
+    console.log("Test: String with non-digit characters should be invalid");
+    console.log(shape.StringUtils.signedEightBitNumber("12a")); // Expected: false
   });
 });
 
