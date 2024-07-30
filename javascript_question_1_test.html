@@ -33,26 +33,17 @@ function adviseBefore(target, advice) {
         return target(...finalArgs);
     };
 }
-
 // Test case
 const originalFunction = function(...args) {
     console.log('Original function called with args:', ...args);
     return args.join(', ');
 };						  
-
 const adviceFunction = function(...args) {
     console.log('Advice function called with args:', ...args);
     // Cambia los argumentos
     return ['Advised argument 1', 'Advised argument 2'];
 };
-			
-									
-												  
-											
-										  
-
 const advisedFn = adviseBefore(originalFunction, adviceFunction);
-
 // Test case
 const result = advisedFn('Test arg 1', 'Test arg 2');
 console.log(result); // Debería mostrar 'Advised argument 1, Advised argument 2'
