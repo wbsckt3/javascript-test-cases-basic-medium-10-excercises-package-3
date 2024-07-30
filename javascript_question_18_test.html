@@ -26,53 +26,37 @@
 <body>
     <div id="editor-container">
         <textarea id="code-editor">
-// Base classes
-class Marine {
-  attack(target) {
-    target.health -= 6;
-  }
-}
-class Zealot {
-  attack(target) {
-    target.health -= 8;
-  }
-}
-class Zergling {
-  attack(target) {
-    target.health -= 5;
-  }
-}
-class Mario {
-  jumpAttack() {
-    console.log('Mamamia!');
-    return 3;
-  }
-}
-// Ensure 'shape' is defined
+// Ensure the shape object exists
 var shape = shape || {};
-// Wrap MarioAdapter within 'shape'
-shape.MarioAdapter = class {
-  constructor(mario) {
-    this.mario = mario;
-  }
-  attack(target) {
-    target.health -= this.mario.jumpAttack();
+// Define the eachChar method within the shape object
+shape.StringUtils = class {
+  static eachChar(str, param) {
+    // If param is a string, append it after each character
+    if (typeof param === 'string') {
+      return str.split('').join(param);
+    }
+    // If param is a function, apply it to each character
+    if (typeof param === 'function') {
+      return str.split('').map(param).join('');
+    }
+    return str;
   }
 };
-// Test case
-const target = { health: 100 };
-const mario = new Mario();
-const marioAdapter = new shape.MarioAdapter(mario);
-marioAdapter.attack(target);
-console.log(`Target health after Mario's attack: ${target.health}`);
+// Example usage and console output
+const result1 = shape.StringUtils.eachChar("hello", " ");
+console.log(result1); // Output: "h e l l o "
+const result2 = shape.StringUtils.eachChar("hello all", function(char) {
+  return char === "l" ? char.toUpperCase() : char;
+});
+console.log(result2); // Output: "heLLo aLL"
         </textarea>
-		<img id="logo" src="logo_refactorii.png" alt="Logo Refactorii">
+	<img id="logo" src="logo_refactorii.png" alt="Logo Refactorii">
         <button id="run-button">Run</button>
     </div>
     <div id="app-container">
         <div id="app">
-	    <h5>Challenge: Implementing the Adapter Design Pattern</h5>
-            <div id="modify-message">The Adapter Design Pattern allows integrating an external character or component into an existing system, ...</div>
+	    <h5>Challenge: String methods</h5>
+            <div id="modify-message">In this challenge, you are to create a method eachChar() for strings that can take either a string or a function as an argument...</div>
 	    <button id="send-response-button" onClick= "guardarResultados()">Send Response</button>
         </div>
     </div>
@@ -138,15 +122,28 @@ console.log(`Target health after Mario's attack: ${target.health}`);
         });
         
         var modal_click_message = `This problem challenges you to continue coding the function to sort an array of positive integers...`;
-        var error_message = `Description:<br><br>
-	The Adapter Design Pattern allows integrating an external character or component into an existing system, making it compatible without 
-        altering its source code. In this challenge, we'll use this pattern to adapt a non-standard character, Mario, into a system that expects a common interface for attack actions.
-	<br><br>
-	Task:
-	<br><br>
-	Create an adapter class, MarioAdapter, that allows a Mario instance to be used like other unit classes (Marine, Zealot, Zergling). The adapter should allow Mario to "attack" by leveraging his jumpAttack method.`;       
-	var success_message = `Congratulations on completing this challenging task! 🎉 You've successfully applied the Adapter Design Pattern, a crucial concept in software design. By adapting Mario's unique abilities into a common interface, 
-        you've demonstrated a deep understanding of how to integrate diverse components seamlessly. `
+        var error_message = `"RuplesJS: String.eachChar() Function" is a programming exercise based on the concept of string methods in programming languages. In this context, 
+	"RuplesJS" appears to be a fictional name used to refer to a series of exercises that combine features from both Ruby and JavaScript, two different programming languages.
+<br><br>
+Exercise Concept<br><br>
+The exercise focuses on implementing a function called eachChar(), which operates similarly to the each_char method in Ruby. This method allows applying an operation to each character of a string. In Ruby, each_char is used to iterate over each character of a string and can be used in combination with a code block that defines what to do with each character.
+<br><br>
+In the "RuplesJS" version, the eachChar() function has two modes of operation, depending on the type of argument passed:
+<br><br>
+String as an Argument: If a string is passed as an argument, it is added after each character of the original string.
+<br><br>
+Example: "hello".eachChar(" ") -> "h e l l o "
+<br><br>
+Function as an Argument: If a function is passed as an argument, this function is applied to each character of the string, allowing manipulation of each character according to the logic defined in the function.
+<br><br>
+Example: "hello all".eachChar(function(char) { return char === "l" ? char.toUpperCase() : char; }) -> "heLLo aLL"
+<br><br>
+Objective of the Exercise<br><br>
+The objective of this exercise is to teach developers how to implement a method that can manipulate strings in a flexible manner, using concepts like polymorphism and callbacks. Additionally, it reinforces the understanding of how to work with functions and methods in JavaScript, especially in comparison to Ruby.
+<br><br>
+The use of the name "RuplesJS" and the reference to Ruby methods like each_char seems to be a way to encourage developers to learn how similar features can be implemented in different programming languages, promoting a deeper understanding of programming concepts that transcend a specific language.`;       
+	var success_message = `🎉 Congratulations on completing the "RuplesJS: String.eachChar() Function" challenge! 🎈 You've mastered the art of string manipulation and implemented a versatile method that showcases the power of polymorphism and callbacks. 
+                                Keep up the great work and continue exploring new horizons in coding! 🚀👏`
         
         // Función para mostrar el modal con el mensaje de error
         document.getElementById('modify-message').addEventListener('click', function() {
@@ -197,54 +194,35 @@ console.log(`Target health after Mario's attack: ${target.health}`);
                     const expect = chai.expect;
 		    const assert = chai.assert;	
 
-describe('MarioAdapter', function() {
-  // Define the classes within the test suite
-  class Marine {
-    attack(target) {
-      target.health -= 6;
-    }
-  }
-  class Zealot {
-    attack(target) {
-      target.health -= 8;
-    }
-  }
-  class Zergling {
-    attack(target) {
-      target.health -= 5;
-    }
-  }
-  class Mario {
-    jumpAttack() {
-      console.log('Mamamia!');
-      return 3;
-    }
-  }
-  shape.MarioAdapter = class {
-    constructor(mario) {
-      this.mario = mario;
-    }
-
-    attack(target) {
-      target.health -= this.mario.jumpAttack();
-    }
-  };
-  it('should correctly adapt Mario\'s jumpAttack to the attack interface', function() {
-    const target = { health: 100 };
-    const mario = new Mario();
-    const marioAdapter = new shape.MarioAdapter(mario);
-    marioAdapter.attack(target);
-    assert.equal(target.health, 97);
+describe("shape.StringUtils.eachChar Method", function() {
+  it("should add a space after each character", function() {
+    const result = shape.StringUtils.eachChar("hello", " ");
+    assert.strictEqual(result, "h e l l o ");
   });
-  it('should work with multiple attacks', function() {
-    const target = { health: 100 };
-    const mario = new Mario();
-    const marioAdapter = new shape.MarioAdapter(mario);
-    marioAdapter.attack(target);
-    marioAdapter.attack(target);
-    assert.equal(target.health, 94);
+
+  it("should convert all 'l' characters to uppercase", function() {
+    const result = shape.StringUtils.eachChar("hello all", function(char) {
+      return char === "l" ? char.toUpperCase() : char;
+    });
+    assert.strictEqual(result, "heLLo aLL");
+  });
+
+  it("should return the original string if parameter is neither string nor function", function() {
+    const result = shape.StringUtils.eachChar("hello", 123);
+    assert.strictEqual(result, "hello");
+  });
+
+  it("should handle an empty string correctly", function() {
+    const result = shape.StringUtils.eachChar("", " ");
+    assert.strictEqual(result, "");
+  });
+
+  it("should handle null or undefined gracefully", function() {
+    const result = shape.StringUtils.eachChar("hello", null);
+    assert.strictEqual(result, "hello");
   });
 });
+
 
 
 		// Variable para rastrear el estado de los tests
