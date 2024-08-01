@@ -67,7 +67,7 @@ console.log(shape.changeTime('00:00', -1));   // '23:59'
         <div id="app">
 	    <h5>Exercice 4: String Manipulation</h5>
             <div id="modify-message">The changeTime function takes a time string in the format 'HH:MM' and splits ... </div>
-	    <button id="send-response-button" onClick= "guardarResultados()">Enviar respuesta</button>
+	    <button id="send-response-button" onClick= "guardarResultados()">Send Response</button>
         </div>
     </div>
     <div id="console-container"><div id="console"></div></div>
@@ -79,7 +79,7 @@ console.log(shape.changeTime('00:00', -1));   // '23:59'
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="errorMessageModalLabel">Error Message</h5>
+                    <h5 class="modal-title" id="errorMessageModalLabel">Concept</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -88,7 +88,7 @@ console.log(shape.changeTime('00:00', -1));   // '23:59'
                     <!-- Contenido del mensaje de error -->
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>
@@ -226,7 +226,8 @@ describe('shape.changeTime()', function() {
   });
 });
 			
-
+		// Variable para rastrear el estado de los tests
+                let allTestsPassed = true;	
                 // Run Mocha tests
                 mocha.run()
                     .on('test', function(test) {
@@ -247,18 +248,17 @@ describe('shape.changeTime()', function() {
 			runButton.onclick = function() {
 			    window.location.reload();
 			};
+			allTestsPassed = false; // Si cualquier test falla, actualizamos la variable	
 		     })
 		     .on('end', function() {
 			logToConsole('• All tests finished!');
 			document.getElementById('modify-message').innerText = success_message;
 			document.getElementById('modify-message').style.display = 'block';
 			document.getElementById('modify-message').style.color = 'black';
-			if (success_message === "Ok! you have modified the function correctly") {
-			    document.getElementById('send-response-button').style.display = 'inline-block';
-			    document.getElementById('send-response-button').style.background = 'green';
-			    document.getElementById('send-response-button').style.cursor= 'pointer';
-			    document.getElementById('send-response-button').style.color= 'white';
-		        }
+			if (allTestsPassed) {
+		               const sendResponseButton = document.getElementById('send-response-button');
+		               sendResponseButton.classList.add('enabled');
+		        } 
 		     });
 
             } catch (e) {
