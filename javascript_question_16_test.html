@@ -26,38 +26,30 @@
 <body>
     <div id="editor-container">
         <textarea id="code-editor">
+/* You need to develop an adapter that integrates Mario’s attack method into a system expecting a unified attack interface.
+Requirements:
+Develop MarioAdapter:
+Create a MarioAdapter class within the shape object.
+The adapter should wrap an instance of the Mario class and adapt its jumpAttack method to fit the attack interface.
+Ensure the adapter's attack method uses Mario’s jumpAttack and modifies the target’s health accordingly. */
 // Base classes
 class Marine {
-  attack(target) {
-    target.health -= 6;
-  }
+
 }
 class Zealot {
-  attack(target) {
-    target.health -= 8;
-  }
+
 }
 class Zergling {
-  attack(target) {
-    target.health -= 5;
-  }
+
 }
 class Mario {
-  jumpAttack() {
-    console.log('Mamamia!');
-    return 3;
-  }
+
 }
 // Ensure 'shape' is defined
 var shape = shape || {};
 // Wrap MarioAdapter within 'shape'
 shape.MarioAdapter = class {
-  constructor(mario) {
-    this.mario = mario;
-  }
-  attack(target) {
-    target.health -= this.mario.jumpAttack();
-  }
+  
 };
 // Test case
 const target = { health: 100 };
@@ -198,6 +190,25 @@ console.log(`Target health after Mario's attack: ${target.health}`);
 		    const assert = chai.assert;	
 
 describe('MarioAdapter', function() {
+
+	 let loggedValues;
+  let originalConsoleLog;
+
+  beforeEach(function() {
+    // Almacenar la función original de console.log y los valores registrados
+    loggedValues = [];
+    originalConsoleLog = console.log;
+    console.log = (...args) => {
+      loggedValues.push(args[0]); // Captura el valor registrado
+      originalConsoleLog.apply(console, args); // Llama al original console.log
+    };
+  });
+
+  afterEach(function() {
+    // Restaura console.log después de cada prueba
+    console.log = originalConsoleLog;
+  });
+	
   // Define the classes within the test suite
   class Marine {
     attack(target) {
