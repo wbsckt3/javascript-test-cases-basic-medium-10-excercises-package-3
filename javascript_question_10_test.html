@@ -27,21 +27,19 @@
         <textarea id="code-editor">
 const shape = {
   trickyDoubles(num) {
-    const strNum = num.toString();
-    const length = strNum.length;
-
-    // Check if the number is a "tricky double"
-    if (length % 2 === 0) {
-      const halfLength = length / 2;
-      if (strNum.substring(0, halfLength) === strNum.substring(halfLength)) {
-        return num; // It's a tricky double, return the number itself
-      }
-    }
-    return num * 2; // Otherwise, return twice the number
+/* To complete this challenge, you need to implement a function called trickyDoubles that takes a number and determines if it qualifies as a "tricky double." Here’s what you need to do:
+Convert the Number to a String: Start by converting the input number into a string to analyze its digits.
+Check for "Tricky Double":
+Determine if the number of digits in the string is even.
+If it is, divide the string into two equal halves.
+Compare the two halves to see if they are identical.
+Return the Appropriate Value:
+If the two halves are identical, return the original number.
+If they are not identical, return twice the number. */
   }
 };
 
-// Test the function with console outputs
+// Test cases for the function
 console.log(shape.trickyDoubles(15));    // Should return 30
 console.log(shape.trickyDoubles(100));   // Should return 200
 console.log(shape.trickyDoubles(4343));  // Should return 4343
@@ -190,6 +188,25 @@ For instance, if you were to implement a system that processes numerical codes w
                     const expect = chai.expect;
 
 describe('shape.trickyDoubles', function() {
+
+	 let loggedValues;
+  let originalConsoleLog;
+
+  beforeEach(function() {
+    // Almacenar la función original de console.log y los valores registrados
+    loggedValues = [];
+    originalConsoleLog = console.log;
+    console.log = (...args) => {
+      loggedValues.push(args[0]); // Captura el valor registrado
+      originalConsoleLog.apply(console, args); // Llama al original console.log
+    };
+  });
+
+  afterEach(function() {
+    // Restaura console.log después de cada prueba
+    console.log = originalConsoleLog;
+  });
+	
   it('should return twice the value if not a tricky double', function() {
     expect(shape.trickyDoubles(15)).to.equal(30);
   });
