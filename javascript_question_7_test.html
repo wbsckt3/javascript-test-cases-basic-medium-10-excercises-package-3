@@ -26,19 +26,24 @@
     <div id="editor-container">
         <textarea id="code-editor">
 const shape = {
-  repeatSum(listOfLists) {
-    const elementCount = {};
-    // Count occurrences of each number
-    listOfLists.forEach(list => {
-      new Set(list).forEach(num => {
-        elementCount[num] = (elementCount[num] || 0) + 1;
-      });
-    });
-    // Filter numbers that appear in two or more lists and sum them
-    return Object.keys(elementCount)
-      .filter(key => elementCount[key] > 1)
-      .reduce((sum, key) => sum + parseInt(key), 0);
-  }
+/* Challenge: Sum Elements Appearing in Multiple Lists
+Challenge Description:
+Create a function that calculates the sum of elements appearing in two or more lists within a given array of lists.
+Specifications
+Function: repeatSum
+Purpose: Compute the sum of elements that appear in at least two lists.
+Parameters:
+listOfLists: An array where each element is an array (list) of numbers.
+Returns: The sum of numbers that appear in two or more of the inner lists.
+Details:
+Use a count-based approach to determine how often each number appears across all lists.
+Only include numbers in the sum if they appear in more than one list.
+The function should handle duplicates within the same list by counting each number only once per list.
+Example Scenario
+Input: repeatSum([[1, 2, 3], [3, 4, 5], [1, 6, 7], [4, 8, 9]])
+Output: 8 (since 1, 3, and 4 appear in two or more lists, and their sum is 1 + 3 + 4 = 8).
+Objective
+Implement the repeatSum function to accurately count the occurrences of each number across multiple lists and compute the sum of those that appear in more than one list. */
 };
 // Test cases
 console.log(shape.repeatSum([[1, 2, 3], [2, 8, 9], [7, 123, 8]])); // Should return 10 (2 + 8)
@@ -182,6 +187,25 @@ Overall, the exercise emphasizes problem-solving skills, particularly in data ma
                     const expect = chai.expect;
 			
    describe('shape.repeatSum()', function() {
+
+   let loggedValues;
+  let originalConsoleLog;
+
+  beforeEach(function() {
+    // Almacenar la función original de console.log y los valores registrados
+    loggedValues = [];
+    originalConsoleLog = console.log;
+    console.log = (...args) => {
+      loggedValues.push(args[0]); // Captura el valor registrado
+      originalConsoleLog.apply(console, args); // Llama al original console.log
+    };
+  });
+
+  afterEach(function() {
+    // Restaura console.log después de cada prueba
+    console.log = originalConsoleLog;
+  });
+	   
   it('should return the correct sum of numbers appearing in two or more lists', function() {
     expect(shape.repeatSum([[1, 2, 3], [2, 8, 9], [7, 123, 8]])).to.eql(10);
     expect(shape.repeatSum([[1], [2], [3, 4, 4, 4], [123456789]])).to.eql(0);
