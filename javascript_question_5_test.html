@@ -26,13 +26,15 @@
     <div id="editor-container">
         <textarea id="code-editor">
 const shape = {
-  buildFun(N) {
-    const result = [];
-    for (let i = 0; i < N; i++) {
-      result.push(() => i); // Closure captures the current value of i
-    }
-    return result;
-  }
+/* Challenge: Create a Function Generator
+Challenge Description
+Develop a function that generates an array of functions, each of which returns a different value when invoked. The value should correspond to its position in the sequence, demonstrating the use of closures in JavaScript.
+Specifications
+Function: buildFun
+Parameters:
+N: The number of functions to generate.
+Returns: An array of N functions.
+Behavior: The function should create an array of N functions. Each function, when called, should return its corresponding index from the array (i.e., the value it was assigned in the for loop). */
 };
 // Test cases:
 const functionsArray = shape.buildFun(5);
@@ -168,6 +170,25 @@ The expected output is the sequence of numbers from 0 to N-1.`;
                     
 
 describe('shape.buildFun()', function() {
+
+   let loggedValues;
+  let originalConsoleLog;
+
+  beforeEach(function() {
+    // Almacenar la función original de console.log y los valores registrados
+    loggedValues = [];
+    originalConsoleLog = console.log;
+    console.log = (...args) => {
+      loggedValues.push(args[0]); // Captura el valor registrado
+      originalConsoleLog.apply(console, args); // Llama al original console.log
+    };
+  });
+
+  afterEach(function() {
+    // Restaura console.log después de cada prueba
+    console.log = originalConsoleLog;
+  });
+	
   it('should return functions that return correct numbers', function() {
     const functionsArray = shape.buildFun(5);
     const output = functionsArray.map(func => func());
