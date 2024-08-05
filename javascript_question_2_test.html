@@ -28,17 +28,16 @@
         <textarea id="code-editor">
 const shape = {
   sort: function(arr) {
-    // Sorting algorithm implementation (example: bubble sort)
-    for (let i = 0; i < arr.length - 1; i++) {
-      for (let j = 0; j < arr.length - i - 1; j++) {
-        if (arr[j] > arr[j + 1]) {
-          let temp = arr[j];
-          arr[j] = arr[j + 1];
-          arr[j + 1] = temp;
-        }
-      }
-    }
-    return arr;
+/* Challenge: Implement a Sorting Function
+Challenge Description
+You need to develop a function within the shape object that sorts an array of numbers. The function should use a sorting algorithm to rearrange the elements of the array in ascending order.
+Specifications
+Function: shape.sort
+Parameters: An array of numbers (e.g., [4, 2, 7, 1]).
+Returns: The sorted array with elements arranged in ascending order.
+Behavior:
+Implement a sorting algorithm to order the elements. For this challenge, you can use a basic sorting algorithm like bubble sort.
+The function should modify the array in place and return the sorted array. */
   }
 };
 // test case
@@ -174,7 +173,25 @@ console.log('Sorted array:', sortedArray);
                     // Define test cases
                     const expect = chai.expect;
                     describe('JavaScript Code Tests', function() {
-                    
+
+ let loggedValues;
+  let originalConsoleLog;
+
+  beforeEach(function() {
+    // Almacenar la función original de console.log y los valores registrados
+    loggedValues = [];
+    originalConsoleLog = console.log;
+    console.log = (...args) => {
+      loggedValues.push(args[0]); // Captura el valor registrado
+      originalConsoleLog.apply(console, args); // Llama al original console.log
+    };
+  });
+
+  afterEach(function() {
+    // Restaura console.log después de cada prueba
+    console.log = originalConsoleLog;
+  });
+			    
 	it('should sort an array of numbers in ascending order', function() {
       const arrayToSort = [5, 2, 9, 1, 5];
       const sortedArray = shape.sort(arrayToSort);
