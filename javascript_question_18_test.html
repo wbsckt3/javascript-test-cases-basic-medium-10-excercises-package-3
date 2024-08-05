@@ -233,6 +233,16 @@ describe('shape.StringExtensions.eachChar', function() {
     }), "heLLo aLL");
   });
 
+   it('should return "h-e-l-l-o-" when input is "hello" and arg is "-"', function() {
+    const result = shape.StringExtensions.eachChar("hello", "-");
+    expect(result).to.equal("h-e-l-l-o-");
+  });
+
+  it('should return "WORLD" when input is "world" and arg is a function to uppercase each char', function() {
+    const result = shape.StringExtensions.eachChar("world", char => char.toUpperCase());
+    expect(result).to.equal("WORLD");
+  });
+
   it('should return the original string if the argument is not a string or function', function() {
     assert.strictEqual(shape.StringExtensions.eachChar("test", 123), "test");
   });
