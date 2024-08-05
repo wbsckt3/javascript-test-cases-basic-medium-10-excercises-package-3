@@ -25,47 +25,41 @@
 <body>
     <div id="editor-container">
         <textarea id="code-editor">
+/*For this challenge, you need to enhance the existing system by implementing a CompositeAdapter that can handle multiple units and their attacks. Here's what you need to do:
+Understand the Existing Setup:
+Base Classes: Marine, Zealot, and Zergling each have an attack method that reduces the target's health by a fixed amount. Mario has a jumpAttack method that prints "Mamamia!" and returns a value.
+MarioAdapter: Adapts Mario's jumpAttack method to fit the existing attack system.
+Create the CompositeAdapter:
+Objective: You need to create a new adapter that can handle multiple units and apply their attacks sequentially to a target.
+Implementation:
+Define the CompositeAdapter class inside the shape object.
+The CompositeAdapter class should take an array of unit adapters (including MarioAdapter) in its constructor.
+Implement an attack method that iterates over each unit adapter and applies its attack to the target.
+What to Do:
+Implement the CompositeAdapter class that aggregates multiple unit adapters.
+Ensure that the attack method of CompositeAdapter applies each unit's attack to the target sequentially, reflecting the combined effect of all units. */
 // Base classes
 class Marine {
-  attack(target) {
-    target.health -= 6;
-  }
+  // ...
 }
 class Zealot {
-  attack(target) {
-    target.health -= 8;
-  }
+  // ...
 }
 class Zergling {
-  attack(target) {
-    target.health -= 5;
-  }
+  // ...
 }
 class Mario {
-  jumpAttack() {
-    console.log('Mamamia!');
-    return 3;
-  }
+  // ...
 }
 // Ensure 'shape' is defined
 var shape = shape || {};
 // MarioAdapter to adapt Mario's behavior
 shape.MarioAdapter = class {
-  constructor(mario) {
-    this.mario = mario;
-  }
-  attack(target) {
-    target.health -= this.mario.jumpAttack();
-  }
+  // ...
 };
 // Composite Adapter to handle multiple units
 shape.CompositeAdapter = class {
-  constructor(units) {
-    this.units = units;
-  }
-  attack(target) {
-    this.units.forEach(unit => unit.attack(target));
-  }
+  // ...
 };
 // Test cases:
 const target = { health: 100 };
