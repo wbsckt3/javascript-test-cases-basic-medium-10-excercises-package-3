@@ -29,30 +29,32 @@
 // Define the shape object
 var shape = {
   Dog: function(name, age, breed, vaccinated, wormed) {
-    this.name = name;
-    this.age = age;
-    this.breed = breed;
-    this.vaccinated = vaccinated;
-    this.wormed = wormed;
+/* you need to create a Dog class and extend its prototype with a method called checkDog. Here's what you need to do:
+Define the Dog Class:
+Implement the Dog constructor to accept parameters for name, age, breed, vaccinated, and wormed.
+Use these parameters to set the properties of the Dog instance. */
   }
 };
-
 // Extend the Dog prototype with the checkDog method
 shape.Dog.prototype.checkDog = function() {
-  if (this.vaccinated && this.wormed) {
-    return `${this.name} can be accepted`;
-  } else if (this.vaccinated || this.wormed) {
-    return `${this.name} can only be accepted by itself`;
-  } else {
-    return `${this.name} cannot be accepted`;
-  }
+/* Extend the Dog Prototype:
+Add a method named checkDog to the Dog prototype.
+This method should evaluate the dog's vaccination and worming status and return a message based on these conditions.
+Here’s the expected behavior of the checkDog method:
+If the dog is both vaccinated and wormed, return: "[name] can be accepted".
+If the dog is either vaccinated or wormed but not both, return: "[name] can only be accepted by itself".
+If the dog is neither vaccinated nor wormed, return: "[name] cannot be accepted". */
 };
 
-// Example usage
-var spot = new shape.Dog("Spot", 5, "Labrador", true, false);
-console.log(spot.checkDog()); // Should print: "Spot can only be accepted by itself"
+// Test Cases:
+const dog1 = new shape.Dog('Rex', 5, 'Labrador', true, true);
+console.log(dog1.checkDog()); // Rex can be accepted
 
+const dog2 = new shape.Dog('Bella', 3, 'Poodle', true, false);
+console.log(dog2.checkDog()); // Bella can only be accepted by itself
 
+const dog3 = new shape.Dog('Max', 2, 'Beagle', false, false);
+console.log(dog3.checkDog()); // Max cannot be accepted
         </textarea>
 	<img id="logo" src="https://wbsckt3.github.io/javascript-test-cases-basic-medium-10-excercises-package/logo_refactorii.png" alt="Logo Refactorii">
         <button id="run-button">Run</button>
@@ -187,6 +189,25 @@ This exercise also introduces concepts related to handling object properties and
                     const expect = chai.expect;
 			
  describe('shape.Dog', function() {
+
+ let loggedValues;
+  let originalConsoleLog;
+
+  beforeEach(function() {
+    // Almacenar la función original de console.log y los valores registrados
+    loggedValues = [];
+    originalConsoleLog = console.log;
+    console.log = (...args) => {
+      loggedValues.push(args[0]); // Captura el valor registrado
+      originalConsoleLog.apply(console, args); // Llama al original console.log
+    };
+  });
+
+  afterEach(function() {
+    // Restaura console.log después de cada prueba
+    console.log = originalConsoleLog;
+  });
+	 
   it('should allow the dog if both vaccinated and wormed', function() {
     var dog = new shape.Dog("Buddy", 3, "Golden Retriever", true, true);
     expect(dog.checkDog()).to.equal("Buddy can be accepted");
