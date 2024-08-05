@@ -27,35 +27,26 @@
         <textarea id="code-editor">
 // Define the shape object containing the function
 const shape = {
-  permutation_average(n) {
-    // Convert number to string and split into digits
-    const digits = n.toString().split('');
-    // Function to calculate factorial
-    const factorial = (num) => {
-      if (num <= 1) return 1;
-      return num * factorial(num - 1);
-    };
-    // Generate all permutations of the digits
-    const generatePermutations = (arr) => {
-      if (arr.length === 1) return [arr];
-      const permutations = [];
-      for (let i = 0; i < arr.length; i++) {
-        const remaining = [...arr.slice(0, i), ...arr.slice(i + 1)];
-        for (const perm of generatePermutations(remaining)) {
-          permutations.push([arr[i], ...perm]);
-        }
-      }
-      return permutations;
-    };
-    // Get all permutations and sum them
-    const permutations = generatePermutations(digits);
-    const sumOfPermutations = permutations.reduce((sum, perm) => {
-      return sum + parseInt(perm.join(''), 10);
-    }, 0);
-    // Calculate the average and round to the nearest integer
-    const average = sumOfPermutations / permutations.length;
-    return Math.round(average);
-  }
+/* Challenge: Calculate the Average of All Permutations of a Number's Digits
+Challenge Description
+Create a function that computes the average value of all possible permutations of the digits of a given number, and returns the average rounded to the nearest integer.
+Specifications
+Function: permutation_average
+Purpose: Calculate the average of all permutations of the digits of a number.
+Parameters:
+n (number): The input number whose digits will be permuted.
+Returns: The average of all permutations of the digits, rounded to the nearest integer.
+Details:
+Convert: Convert the number to a string and split it into individual digits.
+Generate Permutations: Compute all possible permutations of the digits.
+Sum Permutations: Sum up all the numerical values of these permutations.
+Calculate Average: Compute the average value of the permutations.
+Round: Round the average to the nearest integer.
+Example Scenario
+Input: 123
+Output: Compute all permutations of 1, 2, and 3 (e.g., 123, 132, 213, 231, 312, 321), sum them up, calculate the average, and return it rounded to the nearest integer.
+Objective
+Implement the permutation_average function to correctly calculate and return the average of all permutations of a number's digits, ensuring that all permutations are generated and processed accurately. */
 };
 // Test cases
 console.log(shape.permutation_average(2));    // Output: 2
@@ -198,6 +189,25 @@ Average Calculation: Finally, the average of these numbers is computed and round
 
 // Test suite
 describe('shape.permutation_average', function() {
+
+   let loggedValues;
+  let originalConsoleLog;
+
+  beforeEach(function() {
+    // Almacenar la función original de console.log y los valores registrados
+    loggedValues = [];
+    originalConsoleLog = console.log;
+    console.log = (...args) => {
+      loggedValues.push(args[0]); // Captura el valor registrado
+      originalConsoleLog.apply(console, args); // Llama al original console.log
+    };
+  });
+
+  afterEach(function() {
+    // Restaura console.log después de cada prueba
+    console.log = originalConsoleLog;
+  });
+	
   it('should return the average of all distinct permutations of the digits', function() {
     expect(shape.permutation_average(2)).to.equal(2);
     expect(shape.permutation_average(25)).to.equal(39);
