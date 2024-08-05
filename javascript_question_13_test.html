@@ -211,6 +211,24 @@ These tests help ensure that the adapter pattern implementation and its extensio
 // Test suite for Composite Adapter
 describe('shape.CompositeAdapter', function() {
 
+ let loggedValues;
+  let originalConsoleLog;
+
+  beforeEach(function() {
+    // Almacenar la función original de console.log y los valores registrados
+    loggedValues = [];
+    originalConsoleLog = console.log;
+    console.log = (...args) => {
+      loggedValues.push(args[0]); // Captura el valor registrado
+      originalConsoleLog.apply(console, args); // Llama al original console.log
+    };
+  });
+
+  afterEach(function() {
+    // Restaura console.log después de cada prueba
+    console.log = originalConsoleLog;
+  });
+	
    // Define the classes within the test suite
   class Marine {
     attack(target) {
