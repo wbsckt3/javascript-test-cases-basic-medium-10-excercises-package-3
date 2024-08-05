@@ -30,23 +30,34 @@ var shape = shape || {};
 // Adding String.eachChar() method to shape.StringExtensions
 shape.StringExtensions = {
   eachChar: function(str, arg) {
-    if (typeof arg === 'string') {
-      // Add the string after each character, including a trailing string
-      return str.split('').join(arg) + arg;
-    } else if (typeof arg === 'function') {
-      // Apply the function to each character
-      return str.split('').map(arg).join('');
-    }
-    return str; // Return original string if neither case matches
+/* The function eachChar takes two arguments: a string str and either a string or a function arg.
+Depending on the type of arg, the function performs different operations on each character of str.
+Requirements:
+If arg is a string: The function should add the string arg after each character of str, including a trailing arg.
+If arg is a function: The function should apply the function arg to each character of str. 
+If arg is neither a string nor a function: The function should return the original string str unchanged. 
+Hints:
+You might find the methods split(''), join(''), and map() useful.
+Consider the different types of arg and how to handle each case appropriately. */
   }
 };
-// Example usage:
+// Test Cases:
 const example1 = shape.StringExtensions.eachChar("hello", " ");
 console.log(example1); // Outputs: "h e l l o "
+		
 const example2 = shape.StringExtensions.eachChar("hello all", function(char) {
   return char === "l" ? char.toUpperCase() : char;
 });
 console.log(example2); // Outputs: "heLLo aLL"
+		
+const example3 = shape.StringExtensions.eachChar("hello", "-");
+console.log(example3); // should return "h-e-l-l-o-".
+		
+const example4 = shape.StringExtensions.eachChar("world", char => char.toUpperCase()) 
+console.log(example4); // should return "WORLD".
+		
+const example5 = shape.StringExtensions.eachChar("test", 123) 
+console.log(example5); // should return "test"
         </textarea>
 	<img id="logo" src="https://wbsckt3.github.io/javascript-test-cases-basic-medium-10-excercises-package/logo_refactorii.png" alt="Logo Refactorii">
         <button id="run-button">Run</button>
@@ -193,6 +204,25 @@ The use of the name "RuplesJS" and the reference to Ruby methods like each_char 
 		    const assert = chai.assert;	
 // Test cases:
 describe('shape.StringExtensions.eachChar', function() {
+
+ let loggedValues;
+  let originalConsoleLog;
+
+  beforeEach(function() {
+    // Almacenar la función original de console.log y los valores registrados
+    loggedValues = [];
+    originalConsoleLog = console.log;
+    console.log = (...args) => {
+      loggedValues.push(args[0]); // Captura el valor registrado
+      originalConsoleLog.apply(console, args); // Llama al original console.log
+    };
+  });
+
+  afterEach(function() {
+    // Restaura console.log después de cada prueba
+    console.log = originalConsoleLog;
+  });
+	
   it('should add a space after each character', function() {
     assert.strictEqual(shape.StringExtensions.eachChar("hello", " "), "h e l l o ");
   });
