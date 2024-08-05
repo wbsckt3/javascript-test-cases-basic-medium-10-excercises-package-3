@@ -25,38 +25,37 @@
 <body>
     <div id="editor-container">
         <textarea id="code-editor">
+/* To tackle this challenge, you need to implement an adapter for the Mario class to make it compatible with the attack method used by the other classes (Marine, Zealot, and Zergling). Here's what you need to do:
+Understand the Existing Classes:
+Marine, Zealot, and Zergling: These classes have an attack method that decreases the health of the target by a specific amount.
+Mario: This class has a jumpAttack method that prints "Mamamia!" to the console and returns a value.
+Create the MarioAdapter:
+Objective: You need to adapt the Mario class to fit into the existing system where attack methods modify the target's health.
+Implementation:
+Define a class MarioAdapter inside the shape object.
+The MarioAdapter class should have a constructor that takes an instance of Mario.
+Implement an attack method in the MarioAdapter class that uses Mario's jumpAttack method to determine how much damage to deal to the target.
+What to Do:
+Create an adapter class MarioAdapter that converts Mario's jumpAttack method into an attack method compatible with the existing classes.
+Ensure the adapter properly integrates Mario's attack mechanism with the existing target health reduction logic. */
 // Base classes
 class Marine {
-  attack(target) {
-    target.health -= 6;
-  }
+  // ...
 }
 class Zealot {
-  attack(target) {
-    target.health -= 8;
-  }
+  // ...
 }
 class Zergling {
-  attack(target) {
-    target.health -= 5;
-  }
+  // ...
 }
 class Mario {
-  jumpAttack() {
-    console.log('Mamamia!');
-    return 3;
-  }
+  // ...
 }
 // Ensure 'shape' is defined
 var shape = shape || {};
 // Wrap MarioAdapter within 'shape'
 shape.MarioAdapter = class {
-  constructor(mario) {
-    this.mario = mario;
-  }
-  attack(target) {
-    target.health -= this.mario.jumpAttack();
-  }
+  // ...
 };
 // Test case
 const target = { health: 100 };
@@ -197,6 +196,25 @@ console.log(`Target health after Mario's attack: ${target.health}`);
 		    const assert = chai.assert;	
 
 describe('MarioAdapter', function() {
+
+ let loggedValues;
+  let originalConsoleLog;
+
+  beforeEach(function() {
+    // Almacenar la función original de console.log y los valores registrados
+    loggedValues = [];
+    originalConsoleLog = console.log;
+    console.log = (...args) => {
+      loggedValues.push(args[0]); // Captura el valor registrado
+      originalConsoleLog.apply(console, args); // Llama al original console.log
+    };
+  });
+
+  afterEach(function() {
+    // Restaura console.log después de cada prueba
+    console.log = originalConsoleLog;
+  });
+	
   // Define the classes within the test suite
   class Marine {
     attack(target) {
