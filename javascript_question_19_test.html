@@ -31,20 +31,17 @@ var shape = shape || {};
 
 shape.StringUtils = {
   signedEightBitNumber: function(str) {
-    // Check if the string represents an integer
-    if (!/^-?\d+$/.test(str)) {
-      return false;
-    }
-    
-    // Convert string to a number
-    const num = Number(str);
-    
-    // Check if the number is within the 8-bit signed integer range
-    return num >= -128 && num <= 127;
+/* Challenge: Validate 8-Bit Signed Integers
+Challenge Description
+You need to develop a function named signedEightBitNumber that takes a string (str) as an argument and determines if it represents an 8-bit signed integer. An 8-bit signed integer ranges from -128 to 127. The function should return true if the string represents a number within this range and false otherwise.
+Specifications
+Format Verification: The function should first check if the string is a valid integer. This includes both positive and negative numbers.
+Conversion to Number: Once the string is verified to be a valid integer, it should be converted to a number.
+Range Check: The function should then check if the number is within the 8-bit signed integer range (-128 to 127). */
   }
 };
 
-// Console logs for testing the function
+// Test cases:
 console.log("Test: -128 should be valid");
 console.log(shape.StringUtils.signedEightBitNumber("-128")); // Expected: true
 
@@ -217,6 +214,25 @@ console.log(shape.StringUtils.signedEightBitNumber("12a")); // Expected: false
 		    const assert = chai.assert;	
 
 describe("shape.StringUtils.signedEightBitNumber", function() {
+
+ let loggedValues;
+  let originalConsoleLog;
+
+  beforeEach(function() {
+    // Almacenar la función original de console.log y los valores registrados
+    loggedValues = [];
+    originalConsoleLog = console.log;
+    console.log = (...args) => {
+      loggedValues.push(args[0]); // Captura el valor registrado
+      originalConsoleLog.apply(console, args); // Llama al original console.log
+    };
+  });
+
+  afterEach(function() {
+    // Restaura console.log después de cada prueba
+    console.log = originalConsoleLog;
+  });
+	
   it("should return true for valid 8-bit signed integers", function() {
     console.log("Test: -128 should be valid");
     console.log(shape.StringUtils.signedEightBitNumber("-128")); // Expected: true
