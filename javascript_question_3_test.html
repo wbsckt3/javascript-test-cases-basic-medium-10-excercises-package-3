@@ -26,17 +26,28 @@
     <div id="editor-container">
         <textarea id="code-editor">
 const shape = {
-  sequence(n, pattern) {
-    return Array.from({ length: n }, (element, index) => {
-      if (typeof pattern === 'function') {
-        return pattern(element, index);
-      }
-      return pattern;
-    });
-  },
+/* Challenge: Implement a Sequence Generator Function
+Challenge Description
+You need to create a function within the shape object that generates a sequence of values based on a given pattern. The pattern can either be a static value or a function that dynamically generates values.
+Specifications
+Function: shape.sequence
+Parameters:
+n: A number indicating the length of the sequence to generate.
+pattern: Can be either a static value or a function.
+Returns: An array of length n, where each element is determined by the pattern.
+Behavior:
+If pattern is a static value: Every element in the array should be the same as the pattern.
+If pattern is a function: The function should be called for each index in the sequence, and the result should be used as the corresponding value in the array.
+Example
+Static Value:
+Input: shape.sequence(3, 'x')
+Output: ['x', 'x', 'x']
+Function:
+Input: shape.sequence(3, (element, index) => index * 2)
+Output: [0, 2, 4]  */
 };
 
-// Example usage:
+// Test cases:
 console.log(shape.sequence(3, 4)); // [4, 4, 4]
 console.log(shape.sequence(5, [])); // [[], [], [], [], []]
 console.log(shape.sequence(2, "s")); // ["s", "s"]
@@ -168,6 +179,25 @@ console.log(sum); // 55
                     
 
 describe('shape.sequence()', function() {
+
+   let loggedValues;
+  let originalConsoleLog;
+
+  beforeEach(function() {
+    // Almacenar la función original de console.log y los valores registrados
+    loggedValues = [];
+    originalConsoleLog = console.log;
+    console.log = (...args) => {
+      loggedValues.push(args[0]); // Captura el valor registrado
+      originalConsoleLog.apply(console, args); // Llama al original console.log
+    };
+  });
+
+  afterEach(function() {
+    // Restaura console.log después de cada prueba
+    console.log = originalConsoleLog;
+  });
+	
   it('should create an array filled with the same number', function() {
     expect(shape.sequence(3, 4)).to.eql([4, 4, 4]);
   });
