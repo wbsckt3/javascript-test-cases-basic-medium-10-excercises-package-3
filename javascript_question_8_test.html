@@ -26,34 +26,25 @@
     <div id="editor-container">
         <textarea id="code-editor">
 const shape = {
-  generateArray() {
-    const rows = 10;
-    const cols = 10;
-    const letters = ['A', 'B', 'C', 'D'];
-    let array = [];
-
-    for (let i = 0; i < rows; i++) {
-      let row = [];
-      let usedLetters = new Set();
-      // Ensure each letter is used at least once in the row
-      while (usedLetters.size < letters.length) {
-        const letter = letters[Math.floor(Math.random() * letters.length)];
-        if (!usedLetters.has(letter)) {
-          usedLetters.add(letter);
-          row.push(letter);
-        }
-      }
-      // Fill the rest of the row with random letters
-      while (row.length < cols) {
-        row.push(letters[Math.floor(Math.random() * letters.length)]);
-      }
-      // Shuffle the row to randomize the order of letters
-      row = row.sort(() => Math.random() - 0.5);
-      array.push(row);
-    }
-
-    return array;
-  }
+/* Challenge: Generate a Randomized 2D Array with Specific Letter Distribution
+Challenge Description
+Create a function to generate a 2D array (grid) with specific conditions for the letters used.
+Specifications
+Function: generateArray
+Purpose: Create a 2D array with rows filled with random letters, ensuring a specific pattern for each row.
+Parameters: None
+Returns: A 2D array (grid) of size 10x10.
+Details:
+Grid Size: 10 rows by 10 columns.
+Letters: Use the letters ['A', 'B', 'C', 'D'].
+Row Requirements:
+Each row must contain each letter (A, B, C, D) at least once.
+Fill the remaining cells of the row with random letters from the provided set.
+Row Shuffling: After ensuring that each letter is used at least once, shuffle the row to randomize the order of the letters.
+Example Scenario
+Output: A 10x10 grid where each row contains all letters A, B, C, D at least once and is shuffled randomly.
+Objective
+Implement the generateArray function to produce a grid meeting the requirements and ensuring that the distribution of letters is correct and randomized for each row. */
 };
 // Print the array to console
 console.log(shape.generateArray());
@@ -188,6 +179,25 @@ This challenge simulates situations where you need to generate or manipulate str
                     const expect = chai.expect;
 
 describe('shape.generateArray()', function() {
+
+   let loggedValues;
+  let originalConsoleLog;
+
+  beforeEach(function() {
+    // Almacenar la función original de console.log y los valores registrados
+    loggedValues = [];
+    originalConsoleLog = console.log;
+    console.log = (...args) => {
+      loggedValues.push(args[0]); // Captura el valor registrado
+      originalConsoleLog.apply(console, args); // Llama al original console.log
+    };
+  });
+
+  afterEach(function() {
+    // Restaura console.log después de cada prueba
+    console.log = originalConsoleLog;
+  });
+	
   it('should generate a 10x10 array where each row contains A, B, C, and D at least once', function() {
     const array = shape.generateArray();
     const letters = ['A', 'B', 'C', 'D'];
