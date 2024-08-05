@@ -228,6 +228,24 @@ Each test case demonstrates how the MarioAdapter can adapt Mario's attack based 
 
 describe('MarioAdapter with Strategy Pattern', function() {
 
+ let loggedValues;
+  let originalConsoleLog;
+
+  beforeEach(function() {
+    // Almacenar la función original de console.log y los valores registrados
+    loggedValues = [];
+    originalConsoleLog = console.log;
+    console.log = (...args) => {
+      loggedValues.push(args[0]); // Captura el valor registrado
+      originalConsoleLog.apply(console, args); // Llama al original console.log
+    };
+  });
+
+  afterEach(function() {
+    // Restaura console.log después de cada prueba
+    console.log = originalConsoleLog;
+  });
+	
   class Marine {
   attack(target) {
     target.health -= 6;
