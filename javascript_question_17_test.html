@@ -28,26 +28,17 @@
         <textarea id="code-editor">
 var shape = shape || {};
 shape.primes = function(start, end) {
-    // Helper function to check if a number is prime
-    function isPrime(num) {
-        if (num <= 1) return false;
-        if (num <= 3) return true;
-        if (num % 2 === 0 || num % 3 === 0) return false;
-        for (let i = 5; i * i <= num; i += 6) {
-            if (num % i === 0 || num % (i + 2) === 0) return false;
-        }
-        return true;
-    }
-    // Array to store the prime numbers
-    const primesArray = [];
-    for (let i = start; i <= end; i++) {
-        if (isPrime(i)) {
-            primesArray.push(i);
-        }
-    }
-    // Return null if no prime numbers are found
-    return primesArray.length > 0 ? primesArray : null;
+/* Create a function shape.primes that takes two parameters, start and end, representing the range of numbers to check for primality.
+Implement a helper function isPrime within shape.primes to determine if a number is prime.
+Iterate through the range from start to end, using the isPrime function to check each number.
+Store all prime numbers found within the range in an array.
+Return the array of prime numbers. If no prime numbers are found, return null. */
 };
+// Test cases:
+console.log(shape.primes(10, 20)); // [11, 13, 17, 19]
+console.log(shape.primes(22, 29)); // [23, 29]
+console.log(shape.primes(0, 5));   // [2, 3, 5]
+console.log(shape.primes(8, 10));  // null (no prime numbers in this range)
         </textarea>
 	<img id="logo" src="https://wbsckt3.github.io/javascript-test-cases-basic-medium-10-excercises-package/logo_refactorii.png" alt="Logo Refactorii">
         <button id="run-button">Run</button>
@@ -190,6 +181,25 @@ Example Outputs:
 
 // Tests for shape.primes
 describe('shape.primes', function() {
+
+     let loggedValues;
+  let originalConsoleLog;
+
+  beforeEach(function() {
+    // Almacenar la función original de console.log y los valores registrados
+    loggedValues = [];
+    originalConsoleLog = console.log;
+    console.log = (...args) => {
+      loggedValues.push(args[0]); // Captura el valor registrado
+      originalConsoleLog.apply(console, args); // Llama al original console.log
+    };
+  });
+
+  afterEach(function() {
+    // Restaura console.log después de cada prueba
+    console.log = originalConsoleLog;
+  });
+	
     it('should return [5, 7] for the range 5 to 7', function() {
         assert.deepEqual(shape.primes(5, 7), [5, 7]);
     });
