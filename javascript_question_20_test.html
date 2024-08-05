@@ -31,18 +31,20 @@ var shape = shape || {};
 
 shape.StringUtils = {
   isValidInternationalPhoneNumber: function(phoneNumber) {
-    // Define the regular expression pattern for a valid international phone number
-    const regexPattern = /^\+\d{1,3}[-\s]?\(?\d{1,4}\)?[-\s]?\d{1,4}[-\s]?\d{1,4}[-\s]?\d{1,4}$/;
-
-    // Remove any non-digit characters except for '+' at the start
-    const normalizedNumber = phoneNumber.replace(/(?!^\+)[^\d]/g, '');
-
-    // Check if the normalized number matches the regex pattern and its length is within valid range
-    return regexPattern.test(phoneNumber) && normalizedNumber.length >= 8 && normalizedNumber.length <= 18;
+/* Challenge: Validate International Phone Numbers
+Challenge Description
+You need to develop a function named isValidInternationalPhoneNumber that takes a string (phoneNumber) as an argument and determines if it is a valid international phone number. A valid international phone number should adhere to specific formatting rules and be within a certain length range.
+Specifications
+Regular Expression Pattern: The function should use a regular expression to validate the phone number. The pattern should allow:
+A leading + followed by 1 to 3 digits (country code).
+Optional spaces or dashes between groups of digits.
+An optional set of parentheses enclosing up to 4 digits.
+Normalization: Before applying the regular expression, the function should remove any non-digit characters except for the leading +.
+Length Check: After normalization, the function should ensure that the phone number length is between 8 and 18 digits. */
   }
 };
 
-// Console logs for testing the function
+// Test cases:
 console.log("Test: +1 234 567 890 should be valid");
 console.log(shape.StringUtils.isValidInternationalPhoneNumber("+1 234 567 890")); // Expected: true
 
@@ -218,6 +220,25 @@ Examples of valid numbers:
 		    const assert = chai.assert;	
 
 describe("shape.StringUtils.isValidInternationalPhoneNumber Method", function() {
+
+  let loggedValues;
+  let originalConsoleLog;
+
+  beforeEach(function() {
+    // Almacenar la función original de console.log y los valores registrados
+    loggedValues = [];
+    originalConsoleLog = console.log;
+    console.log = (...args) => {
+      loggedValues.push(args[0]); // Captura el valor registrado
+      originalConsoleLog.apply(console, args); // Llama al original console.log
+    };
+  });
+
+  afterEach(function() {
+    // Restaura console.log después de cada prueba
+    console.log = originalConsoleLog;
+  });
+	
   it("should validate the phone number +1 234 567 890", function() {
     const result = shape.StringUtils.isValidInternationalPhoneNumber("+1 234 567 890");
     assert.strictEqual(result, true);
