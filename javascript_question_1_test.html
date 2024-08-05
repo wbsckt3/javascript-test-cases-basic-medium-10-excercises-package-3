@@ -27,11 +27,19 @@
     <div id="editor-container">
         <textarea id="code-editor">
 function adviseBefore(target, advice) {
-    return function(...args) {
-        const advisedArgs = advice(...args);
-        const finalArgs = Array.isArray(advisedArgs) ? advisedArgs : args;
-        return target(...finalArgs);
-    };
+/* Challenge: Create an Advice Function Wrapper
+Description:
+You need to develop a higher-order function named adviseBefore that takes two arguments: a target function (target) and an advice function (advice). This higher-order function should return a new function that:
+Executes the advice function before the target function.
+Allows the advice function to modify the arguments passed to the target function.
+Specifications
+Parameters:
+target: The original function that will be called after the advice function.
+advice: A function that is executed before the target function and can modify its arguments.
+Behavior:
+When the returned function is called, it first calls the advice function with the same arguments.
+The advice function can return a new set of arguments to be passed to the target function.
+If the advice function returns an array, these should be used as the new arguments for the target function. If it does not return an array, the original arguments should be used. */
 }
 // Test case
 const originalFunction = function(...args) {
@@ -172,6 +180,24 @@ This exercise tests your ability to work with higher-order functions, argument m
                     // Define test cases
                     const expect = chai.expect;
                     describe('JavaScript Code Tests', function() {
+
+  let loggedValues; 
+  let originalConsoleLog;
+
+  beforeEach(function() {
+    // Almacenar la función original de console.log y los valores registrados
+    loggedValues = [];
+    originalConsoleLog = console.log;
+    console.log = (...args) => {
+      loggedValues.push(args[0]); // Captura el valor registrado
+      originalConsoleLog.apply(console, args); // Llama al original console.log
+    };
+  });
+
+  afterEach(function() {
+    // Restaura console.log después de cada prueba
+    console.log = originalConsoleLog;
+  });
                     
 		    it('should execute without errors', function(done) {
                         try {
