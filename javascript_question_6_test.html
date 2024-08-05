@@ -26,23 +26,27 @@
     <div id="editor-container">
         <textarea id="code-editor">
 const shape = {
-  // Function to find the sum of proper divisors of a number
-  getDivisorsSum(num) {
-    let sum = 0;
-    for (let i = 1; i <= Math.floor(num / 2); i++) {
-      if (num % i === 0) {
-        sum += i;
-      }
-    }
-    return sum;
-  },
-
-  // Function to check if two numbers are amicable
-  amicableNumbers(num1, num2) {
-    const sum1 = this.getDivisorsSum(num1);
-    const sum2 = this.getDivisorsSum(num2);
-    return sum1 === num2 && sum2 === num1;
-  }
+/* Challenge: Implement Functions to Identify Amicable Numbers
+Challenge Description
+Develop two functions that work together to identify if two numbers are amicable. An amicable pair consists of two numbers where each number is the sum of the proper divisors of the other.
+Specifications
+Function: getDivisorsSum
+Purpose: Calculate the sum of all proper divisors of a given number.
+Parameters:
+num: The number for which to find the sum of proper divisors.
+Returns: The sum of proper divisors of num.
+Details:
+Proper divisors are numbers less than num that divide num without leaving a remainder.
+The function should iterate from 1 to Math.floor(num / 2) to find all divisors.
+Function: amicableNumbers
+Purpose: Determine if two numbers are amicable.
+Parameters:
+num1: The first number.
+num2: The second number.
+Returns: true if num1 and num2 are amicable; otherwise, false.
+Details:
+Use the getDivisorsSum function to find the sum of proper divisors for both numbers.
+Check if the sum of proper divisors of num1 equals num2, and vice versa. */
 };
 // Example usage:
 console.log(shape.amicableNumbers(220, 284)); // Should print: true
@@ -184,6 +188,25 @@ can sharpen your problem-solving skills and attention to detail, which are cruci
                     const expect = chai.expect;
 
 describe('shape.amicableNumbers()', function() {
+
+   let loggedValues;
+  let originalConsoleLog;
+
+  beforeEach(function() {
+    // Almacenar la función original de console.log y los valores registrados
+    loggedValues = [];
+    originalConsoleLog = console.log;
+    console.log = (...args) => {
+      loggedValues.push(args[0]); // Captura el valor registrado
+      originalConsoleLog.apply(console, args); // Llama al original console.log
+    };
+  });
+
+  afterEach(function() {
+    // Restaura console.log después de cada prueba
+    console.log = originalConsoleLog;
+  });
+	
   it('should correctly identify amicable numbers', function() {
     // Test case 1: Amicable numbers 220 and 284
     expect(shape.amicableNumbers(220, 284)).to.be.true;
