@@ -26,31 +26,27 @@
     <div id="editor-container">
         <textarea id="code-editor">
 const shape = {
-  changeTime(time, delta) {
-    let [hours, minutes] = time.split(':').map(Number);
-
-    // Adjust minutes
-    minutes += delta;
-
-    // Handle minute overflow/underflow
-    if (minutes >= 60) {
-      minutes -= 60;
-      hours += 1;
-    } else if (minutes < 0) {
-      minutes += 60;
-      hours -= 1;
-    }
-
-    // Handle hour overflow/underflow
-    if (hours >= 24) {
-      hours = 0;
-    } else if (hours < 0) {
-      hours = 23;
-    }
-
-    // Format the output with leading zeros if necessary
-    return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
-  }
+/* Challenge: Create a Flexible Sequence Generator
+Challenge Description
+Develop a function that generates a sequence based on a given pattern, which can either be a static value or a dynamic function. This function should handle both cases to produce the desired sequence.
+Specifications
+Function: shape.sequence
+Parameters:
+n: The number of elements in the sequence.
+pattern: A static value or a function to determine the values in the sequence.
+Returns: An array of length n where each element is determined by the pattern.
+Behavior:
+If pattern is a static value: The function should return an array where every element is the same as the pattern.
+If pattern is a function: The function should be called for each element in the sequence. Use the index of the element in the sequence as an argument to the function, and the function's return value should be used for that element.
+Example Scenarios
+Static Value Example:
+Input: shape.sequence(4, 'A')
+Output: ['A', 'A', 'A', 'A']
+Function Example:
+Input: shape.sequence(3, (element, index) => index * 10)
+Output: [0, 10, 20]
+Objective
+Implement the sequence function within the shape object to dynamically generate sequences based on the provided pattern, accommodating both static values and functions. */
 };
 
 // Test cases
@@ -205,6 +201,25 @@ These cases demonstrate the function's ability to correctly adjust the time whil
                     
 
 describe('shape.changeTime()', function() {
+
+   let loggedValues;
+  let originalConsoleLog;
+
+  beforeEach(function() {
+    // Almacenar la función original de console.log y los valores registrados
+    loggedValues = [];
+    originalConsoleLog = console.log;
+    console.log = (...args) => {
+      loggedValues.push(args[0]); // Captura el valor registrado
+      originalConsoleLog.apply(console, args); // Llama al original console.log
+    };
+  });
+
+  afterEach(function() {
+    // Restaura console.log después de cada prueba
+    console.log = originalConsoleLog;
+  });
+	
   it('should increase time by 1 minute', function() {
     const result = shape.changeTime('10:00', 1);
     expect(result).to.equal('10:01');
